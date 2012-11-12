@@ -1,0 +1,31 @@
+{
+    "name": "spiffy/spiffy-navigation",
+    "description": "Zend Framework 2 Module that aims to replace Zend\\Navigation",
+    "type": "library",
+    "keywords": [
+        "module",
+        "zf2"
+    ],
+    "homepage": "http://www.github.com/spiffyjr/spiffy-navigation/",
+    "authors": [
+        {
+            "name": "Kyle Spraggs",
+            "email": "theman@spiffyjr.me",
+            "homepage": "http://www.spiffyjr.me/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zend-mvc": "2.0.x"
+    },
+
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+
+    "autoload": {
+        "psr-0": {
+            "SpiffyNavigation": "src/"
+        }
+    }
+}

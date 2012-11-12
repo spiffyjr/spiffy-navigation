@@ -1,0 +1,10 @@
+<phpunit bootstrap="bootstrap.php">
+    
+    <testsuite name="SpiffyNavigation Test Suite">
+
+        <directory>./SpiffyNavigationTest</directory>
+
+    </testsuite>
+
+</phpunit>
+
