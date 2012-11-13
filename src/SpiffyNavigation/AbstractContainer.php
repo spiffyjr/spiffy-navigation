@@ -7,7 +7,7 @@ use RecursiveIterator;
 use RecursiveIteratorIterator;
 use SpiffyNavigation\Page\PageInterface;
 
-class Container implements RecursiveIterator
+abstract class AbstractContainer implements RecursiveIterator
 {
     /**
      * Index of current active child.
@@ -105,7 +105,7 @@ class Container implements RecursiveIterator
      * Adds a page to the container.
      *
      * @param PageInterface $page
-     * @return Container
+     * @return AbstractContainer
      * @throws InvalidArgumentException
      */
     public function addPage(PageInterface $page)
@@ -154,7 +154,7 @@ class Container implements RecursiveIterator
         $result   = array();
         $iterator = new RecursiveIteratorIterator($this, RecursiveIteratorIterator::SELF_FIRST);
 
-        /** @var \SpiffyNavigation\Page\Page $page */
+        /** @var \SpiffyNavigation\Page\PageInterface $page */
         foreach ($iterator as $page) {
             $attributes = $page->getAttributes();
 

@@ -2,10 +2,10 @@
 
 namespace SpiffyNavigationTest\Page;
 
-use PHPUnit_Framework_TestCase;
 use SpiffyNavigation\Page\Page;
+use SpiffyNavigationTest\AbstractTest;
 
-class PageTest extends PHPUnit_Framework_TestCase
+class PageTest extends AbstractTest
 {
     public function testSettingDataAttributeIsValid()
     {

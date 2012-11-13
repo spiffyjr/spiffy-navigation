@@ -5,8 +5,9 @@ namespace SpiffyNavigation\Service;
 use InvalidArgumentException;
 use RecursiveIteratorIterator;
 use RuntimeException;
-use SpiffyNavigation\Container;
+use SpiffyNavigation\AbstractContainer;
 use SpiffyNavigation\Page\PageInterface;
+use SpiffyNavigation\Page\Page;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Router\RouteStackInterface;
 
@@ -131,11 +132,11 @@ class Navigation
      * Add a container to the stack.
      *
      * @param string $name
-     * @param Container $container
+     * @param AbstractContainer $container
      * @return Navigation
      * @throws InvalidArgumentException on duplicate container
      */
-    public function addContainer($name, Container $container)
+    public function addContainer($name, AbstractContainer $container)
     {
         if ($this->hasContainer($name)) {
             throw new InvalidArgumentException(sprintf(
@@ -151,7 +152,7 @@ class Navigation
      * Get a container by name.
      *
      * @param string $name
-     * @return Container
+     * @return AbstractContainer
      * @throws InvalidArgumentException on missing container
      */
     public function getContainer($name)

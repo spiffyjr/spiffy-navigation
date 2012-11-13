@@ -2,9 +2,8 @@
 
 namespace SpiffyNavigationTest\Service;
 
-use PHPUnit_Framework_TestCase;
 use ReflectionClass;
-use SpiffyNavigation\Container;
+use SpiffyNavigationTest\AbstractTest;
 use SpiffyNavigation\Page\Page;
 use SpiffyNavigation\Service\Navigation;
 use Zend\Mvc\Router\RouteMatch;
@@ -12,7 +11,7 @@ use Zend\Mvc\Router\Http\Literal;
 use Zend\Mvc\Router\Http\TreeRouteStack;
 use Zend\Mvc\Router\Http\Regex as RegexRoute;
 
-class NavigationTest extends PHPUnit_Framework_TestCase
+class NavigationTest extends AbstractTest
 {
     public function testIsActiveCache()
     {
@@ -224,58 +223,37 @@ class NavigationTest extends PHPUnit_Framework_TestCase
 
     public function testHasContainer()
     {
-        $navigation = new Navigation();
-        $container  = new Container();
-
-        $navigation->addContainer('test', $container);
-
-        $this->assertTrue($navigation->hasContainer('test'));
-        $this->assertFalse($navigation->hasContainer('foo'));
+        $this->assertTrue($this->nav->hasContainer('container1'));
+        $this->assertFalse($this->nav->hasContainer('foo'));
     }
 
     public function testAddContainerThrowsExceptionOnDuplicateName()
     {
         $this->setExpectedException('InvalidArgumentException');
-
-        $navigation = new Navigation();
-        $container  = new Container();
-
-        $navigation->addContainer('test', $container);
-        $navigation->addContainer('test', $container);
+        $this->nav->addContainer('container1', $this->nav->getContainer('container1'));
     }
 
     public function testClearContainerResetsContainers()
     {
-        $navigation = new Navigation();
-        $container  = new Container();
-
-        $navigation->addContainer('test', $container);
-        $navigation->clearContainers();
-
-        $this->assertCount(0, $navigation->getContainers());
+        $nav = clone $this->nav;
+        $nav->clearContainers();
+        $this->assertCount(0, $nav->getContainers());
     }
 
     public function testSetContainerSetsANewContainer()
     {
         $navigation = new Navigation();
-        $container  = new Container();
+        $page       = new Page();
 
-        $navigation->addContainer('test', $container);
+        $navigation->addContainer('test', $page);
         $this->assertCount(1, $navigation->getContainers());
     }
 
     public function testGetContainerReturnsAllContainers()
     {
-        $navigation = new Navigation();
-        $container  = new Container();
-        $container2 = new Container();
-
-        $navigation->addContainer('test', $container);
-        $navigation->addContainer('test2', $container2);
-
-        $containers = $navigation->getContainers();
-        $this->assertEquals($container, $containers['test']);
-        $this->assertEquals($container2, $containers['test2']);
+        $containers = $this->nav->getContainers();
+        $this->assertEquals($this->container1, $containers['container1']);
+        $this->assertEquals($this->container2, $containers['container2']);
     }
 
     public function testRemoveContainerWithInvalidNameThrowsException()
@@ -288,16 +266,11 @@ class NavigationTest extends PHPUnit_Framework_TestCase
 
     public function testRemoveContainer()
     {
-        $navigation = new Navigation();
-        $container  = new Container();
-        $container2 = new Container();
+        $nav = clone $this->nav;
+        $nav->removeContainer('container1');
 
-        $navigation->addContainer('test', $container);
-        $navigation->addContainer('test2', $container2);
-
-        $navigation->removeContainer('test');
-
-        $containers = $navigation->getContainers();
-        $this->assertEquals($container2, $containers['test2']);
+        $containers = $nav->getContainers();
+        $this->assertCount(1, $containers);
+        $this->assertEquals($this->container2, $containers['container2']);
     }
 }

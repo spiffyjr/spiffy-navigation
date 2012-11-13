@@ -2,9 +2,55 @@
 
 namespace SpiffyNavigationTest\View\Helper;
 
-use PHPUnit_Framework_TestCase;
+use ReflectionClass;
+use SpiffyNavigation\Page\Page;
+use SpiffyNavigationTest\AbstractTest;
 
-class NavigationMenuTest extends PHPUnit_Framework_TestCase
+class NavigationMenuTest extends AbstractTest
 {
+    /**
+     * @var string
+     */
+    protected $helperName = 'SpiffyNavigation\View\Helper\NavigationMenu';
 
+    public function testRenderMenu()
+    {
+        $this->assertEquals($this->asset('expected/menu1.html'), $this->helper->renderMenu('container1'));
+    }
+
+    public function testHtmlifyIgnoresInvalidAttributes()
+    {
+        $page = new Page();
+        $page->setAttributes(array('label' => 'Foo', 'uri' => 'http://www.google.com', 'invalid' => 'attribute'));
+
+        $reflectionClass = new ReflectionClass($this->helper);
+        $htmlify = $reflectionClass->getMethod('htmlify');
+        $htmlify->setAccessible(true);
+
+        $this->assertEquals('<a href="http://www.google.com">Foo</a>', $htmlify->invoke($this->helper, $page));
+    }
+
+    public function testHtmlifyForPageWithHref()
+    {
+        $page = new Page();
+        $page->setAttributes(array('label' => 'Foo', 'uri' => 'http://www.google.com'));
+
+        $reflectionClass = new ReflectionClass($this->helper);
+        $htmlify = $reflectionClass->getMethod('htmlify');
+        $htmlify->setAccessible(true);
+
+        $this->assertEquals('<a href="http://www.google.com">Foo</a>', $htmlify->invoke($this->helper, $page));
+    }
+
+    public function testHtmlifyForPageWithNoHref()
+    {
+        $page = new Page();
+        $page->setAttributes(array('label' => 'Foo'));
+
+        $reflectionClass = new ReflectionClass($this->helper);
+        $htmlify = $reflectionClass->getMethod('htmlify');
+        $htmlify->setAccessible(true);
+
+        $this->assertEquals('<span>Foo</span>', $htmlify->invoke($this->helper, $page));
+    }
 }

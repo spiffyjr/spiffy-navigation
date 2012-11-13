@@ -3,10 +3,9 @@
 namespace SpiffyNavigation\Page;
 
 use InvalidArgumentException;
-use RuntimeException;
-use SpiffyNavigation\Container;
+use SpiffyNavigation\AbstractContainer;
 
-class Page extends Container implements PageInterface
+class Page extends AbstractContainer implements PageInterface
 {
     /**
      * Additional attributes for the page.
