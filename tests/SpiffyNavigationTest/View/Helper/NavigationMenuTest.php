@@ -13,6 +13,11 @@ class NavigationMenuTest extends AbstractTest
      */
     protected $helperName = 'SpiffyNavigation\View\Helper\NavigationMenu';
 
+    public function testInvokeSetsContainer()
+    {
+        $this->assertEquals($this->asset('expected/menu1.html'), $this->helper->__invoke('container1')->renderMenu());
+    }
+
     public function testRenderMenu()
     {
         $this->assertEquals($this->asset('expected/menu1.html'), $this->helper->renderMenu('container1'));

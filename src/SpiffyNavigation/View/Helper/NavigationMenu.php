@@ -20,7 +20,14 @@ class NavigationMenu extends AbstractHelper
         'target'
     );
 
-    public function renderMenu($container, array $options = array())
+    /**
+     * Render a default menu.
+     *
+     * @param string|\SpiffyNavigation\AbstractContainer|null $container
+     * @param array $options
+     * @return string
+     */
+    public function renderMenu($container = null, array $options = array())
     {
         $html      = '';
         $container = $this->getContainer($container);
@@ -59,8 +66,15 @@ class NavigationMenu extends AbstractHelper
         return $html;
     }
 
-    public function render($container)
+    /**
+     * Default render.
+     *
+     * @param string|\SpiffyNavigation\AbstractContainer|null $container
+     * @return string
+     */
+    public function render($container = null)
     {
+        $container = $this->getContainer($container);
         if ($this->getPartial()) {
             return $this->renderPartial($container);
         }

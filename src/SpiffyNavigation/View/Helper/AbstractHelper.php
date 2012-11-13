@@ -16,11 +16,29 @@ abstract class AbstractHelper extends AbstractHtmlElement
     protected $navigation;
 
     /**
+     * Current container having work done.
+     * @var string
+     */
+    protected $container = null;
+
+    /**
      * @param \SpiffyNavigation\Service\Navigation $navigation
      */
     public function __construct(Navigation $navigation)
     {
         $this->navigation = $navigation;
+    }
+
+    /**
+     * @param string|AbstractContainer $container
+     * @return AbstractHelper
+     */
+    public function __invoke($container = null)
+    {
+        if ($container) {
+            $this->container = $this->getContainer($container);
+        }
+        return $this;
     }
 
     /**
@@ -32,6 +50,8 @@ abstract class AbstractHelper extends AbstractHtmlElement
      */
     protected function getContainer($input)
     {
+        $input = $input ? $input : $this->container;
+
         if (is_string($input)) {
             return $this->navigation->getContainer($input);
         } else if (!$input instanceof AbstractContainer) {

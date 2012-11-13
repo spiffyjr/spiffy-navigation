@@ -1,3 +1,7 @@
 <?php
 
-return array();
+return array(
+    'spiffynavigation' => array(
+        'containers' => array()
+    )
+);
