@@ -1,26 +1,42 @@
 <?php
 
 return array(
-    'pages' => array(
-        array(
-            'attributes' => array(
-                'label' => 'child1',
-                'uri' => 'http://www.child1.com'
-            )
+    array(
+        'name' => 'child1',
+        'properties' => array(
+            'uri' => 'http://www.child1.com',
         ),
-        array(
-            'attributes' => array(
-                'label' => 'child2',
-                'uri' => 'http://www.child2.com',
-                'foo' => 'bar'
-            )
+        'attributes' => array(
+            'class' => 'child1-class'
         ),
-        array(
-            'attributes' => array(
-                'label' => 'child3',
-                'uri' => 'http://www.child3.com',
-                'foo' => 'bar'
-            )
+    ),
+    array(
+        'name' => 'child1',
+        'properties' => array(
+            'uri' => 'http://www.child1.com',
+        ),
+        'attributes' => array(
+            'class' => 'child1-2-class'
+        ),
+    ),
+    array(
+        'name' => 'child2',
+        'properties' => array(
+            'uri' => 'http://www.child2.com',
+            'foo' => 'bar'
+        ),
+        'attributes' => array(
+            'class' => 'child2-class'
+        )
+    ),
+    array(
+        'name' => 'child3',
+        'properties' => array(
+            'uri' => 'http://www.child3.com',
+            'foo' => 'bar'
+        ),
+        'attributes' => array(
+            'class' => 'child3-class'
         )
     )
 );

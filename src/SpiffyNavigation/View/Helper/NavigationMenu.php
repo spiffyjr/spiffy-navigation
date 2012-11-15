@@ -23,7 +23,7 @@ class NavigationMenu extends AbstractHelper
     /**
      * Render a default menu.
      *
-     * @param string|\SpiffyNavigation\AbstractContainer|null $container
+     * @param string|\SpiffyNavigation\Container|null $container
      * @param array $options
      * @return string
      */
@@ -34,7 +34,7 @@ class NavigationMenu extends AbstractHelper
         $options   = new Options\NavigationMenu($options);
         $iterator  = new RecursiveIteratorIterator($container, RecursiveIteratorIterator::SELF_FIRST);
 
-        /** @var \SpiffyNavigation\Page\PageInterface $page */
+        /** @var \SpiffyNavigation\Page\Page $page */
         $prevDepth = -1;
         foreach($iterator as $page) {
             $depth = $iterator->getDepth();
@@ -69,7 +69,7 @@ class NavigationMenu extends AbstractHelper
     /**
      * Default render.
      *
-     * @param string|\SpiffyNavigation\AbstractContainer|null $container
+     * @param string|\SpiffyNavigation\Container|null $container
      * @return string
      */
     public function render($container = null)
@@ -90,24 +90,27 @@ class NavigationMenu extends AbstractHelper
      */
     protected function htmlify(Page $page, $escapeLabel = true)
     {
-        $attrs = $page->getAttributes();
-        $label = isset($attrs['label']) ? $attrs['label'] : '';
-        $href  = null;
+        if ($page->getProperty('label')) {
+            $label = $page->getProperty('label');
+        } else {
+            $label = $page->getName();
+        }
 
+        $href = null;
         try {
             $href = $this->navigation->getHref($page);
         } catch (RuntimeException $e) {
             ; // intentionally left blank
         }
 
+        $attribs = $page->getAttributes();
         if ($href) {
-            $element       = 'a';
-            $attrs['href'] = $href;
+            $element         = 'a';
+            $attribs['href'] = $href;
         } else {
             $element = 'span';
         }
 
-        $attrs = $this->cleanAttribs($attrs, $this->validAttribs);
-        return sprintf('<%s%s>%s</%s>', $element, $this->htmlAttribs($attrs), $label, $element);
+        return sprintf('<%s%s>%s</%s>', $element, $this->htmlAttribs($attribs), $label, $element);
     }
 }

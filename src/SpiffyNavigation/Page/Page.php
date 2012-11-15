@@ -3,44 +3,33 @@
 namespace SpiffyNavigation\Page;
 
 use InvalidArgumentException;
-use SpiffyNavigation\AbstractContainer;
+use SpiffyNavigation\Container;
 
-class Page extends AbstractContainer implements PageInterface
+class Page extends Container
 {
     /**
-     * Additional attributes for the page.
+     * Page name (does not have to be unique).
+     * @var string|null
+     */
+    protected $name;
+
+    /**
+     * Attributes used to construct the page element.
      * @var array
      */
     protected $attributes = array();
+
+    /**
+     * Custom properties for the page.
+     * @var array
+     */
+    protected $properties = array();
 
     /**
      * Parent of this node, if any.
      * @var null|Page
      */
     protected $parent;
-
-    /**
-     * Creates a page tree from an array.
-     *
-     * @param array $spec
-     * @return Page
-     */
-    public static function factory(array $spec)
-    {
-        $page = new Page();
-
-        if (isset($spec['attributes'])) {
-            $page->setAttributes($spec['attributes']);
-        }
-
-        if (isset($spec['pages'])) {
-            foreach($spec['pages'] as $childSpec) {
-                $page->addChild(self::factory($childSpec));
-            }
-        }
-
-        return $page;
-    }
 
     /**
      * Adds a child to the current page. The factory method is used if an array
@@ -53,9 +42,9 @@ class Page extends AbstractContainer implements PageInterface
     public function addChild($pageOrSpec)
     {
         if (is_array($pageOrSpec)) {
-            $pageOrSpec = self::factory($pageOrSpec);
+            $pageOrSpec = PageFactory::create($pageOrSpec);
         } else if (!$pageOrSpec instanceof Page) {
-            throw new InvalidArgumentException('Valid page types are an array or Page instance');
+            throw new InvalidArgumentException('Valid page types are an array or an Page instance');
         }
 
         $pageOrSpec->setParent($this);
@@ -92,6 +81,72 @@ class Page extends AbstractContainer implements PageInterface
     }
 
     /**
+     * Set a property.
+     *
+     * @param string $property
+     * @param mixed $value
+     * @return Page
+     */
+    public function setProperty($property, $value)
+    {
+        $this->properties[$property] = $value;
+        return $this;
+    }
+
+    /**
+     * Get a property.
+     *
+     * @param string $property
+     * @return mixed
+     */
+    public function getProperty($property)
+    {
+        return isset($this->properties[$property]) ? $this->properties[$property] : null;
+    }
+
+    /**
+     * @param array $properties
+     * @return Page
+     */
+    public function setProperties(array $properties)
+    {
+        $this->properties = $properties;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getProperties()
+    {
+        return $this->properties;
+    }
+
+    /**
+     * Set a attribute.
+     *
+     * @param string $attribute
+     * @param mixed $value
+     * @return Page
+     */
+    public function setAttribute($attribute, $value)
+    {
+        $this->attributes[$attribute] = $value;
+        return $this;
+    }
+
+    /**
+     * Get a attribute.
+     *
+     * @param string $attribute
+     * @return mixed
+     */
+    public function getAttribute($attribute)
+    {
+        return isset($this->attributes[$attribute]) ? $this->attributes[$attribute] : null;
+    }
+
+    /**
      * @param array $attributes
      * @return Page
      */
@@ -107,5 +162,22 @@ class Page extends AbstractContainer implements PageInterface
     public function getAttributes()
     {
         return $this->attributes;
+    }
+
+    /**
+     * @param null|string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }

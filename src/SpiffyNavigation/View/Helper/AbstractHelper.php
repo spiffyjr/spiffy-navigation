@@ -3,8 +3,7 @@
 namespace SpiffyNavigation\View\Helper;
 
 use InvalidArgumentException;
-use SpiffyNavigation\AbstractContainer;
-use SpiffyNavigation\Page\Page;
+use SpiffyNavigation\Container;
 use SpiffyNavigation\Service\Navigation;
 use Zend\View\Helper\AbstractHtmlElement;
 
@@ -30,7 +29,7 @@ abstract class AbstractHelper extends AbstractHtmlElement
     }
 
     /**
-     * @param string|AbstractContainer $container
+     * @param string|Container $container
      * @return AbstractHelper
      */
     public function __invoke($container = null)
@@ -44,8 +43,8 @@ abstract class AbstractHelper extends AbstractHtmlElement
     /**
      * Gets container from input.
      *
-     * @param string|AbstractContainer $input
-     * @return AbstractContainer
+     * @param string|Container $input
+     * @return Container
      * @throws InvalidArgumentException on invalid input.
      */
     protected function getContainer($input)
@@ -54,7 +53,7 @@ abstract class AbstractHelper extends AbstractHtmlElement
 
         if (is_string($input)) {
             return $this->navigation->getContainer($input);
-        } else if (!$input instanceof AbstractContainer) {
+        } else if (!$input instanceof Container) {
             throw new InvalidArgumentException('Container must be a string or instance of SpiffyNavigation\Container');
         }
         return $input;

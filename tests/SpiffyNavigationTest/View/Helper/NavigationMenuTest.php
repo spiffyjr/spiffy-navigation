@@ -13,11 +13,6 @@ class NavigationMenuTest extends AbstractTest
      */
     protected $helperName = 'SpiffyNavigation\View\Helper\NavigationMenu';
 
-    public function testInvokeSetsContainer()
-    {
-        $this->assertEquals($this->asset('expected/menu1.html'), $this->helper->__invoke('container1')->renderMenu());
-    }
-
     public function testRenderMenu()
     {
         $this->assertEquals($this->asset('expected/menu1.html'), $this->helper->renderMenu('container1'));
@@ -26,7 +21,7 @@ class NavigationMenuTest extends AbstractTest
     public function testHtmlifyIgnoresInvalidAttributes()
     {
         $page = new Page();
-        $page->setAttributes(array('label' => 'Foo', 'uri' => 'http://www.google.com', 'invalid' => 'attribute'));
+        $page->setProperties(array('label' => 'Foo', 'uri' => 'http://www.google.com', 'invalid' => 'attribute'));
 
         $reflectionClass = new ReflectionClass($this->helper);
         $htmlify = $reflectionClass->getMethod('htmlify');
@@ -38,7 +33,7 @@ class NavigationMenuTest extends AbstractTest
     public function testHtmlifyForPageWithHref()
     {
         $page = new Page();
-        $page->setAttributes(array('label' => 'Foo', 'uri' => 'http://www.google.com'));
+        $page->setProperties(array('label' => 'Foo', 'uri' => 'http://www.google.com'));
 
         $reflectionClass = new ReflectionClass($this->helper);
         $htmlify = $reflectionClass->getMethod('htmlify');
@@ -50,7 +45,7 @@ class NavigationMenuTest extends AbstractTest
     public function testHtmlifyForPageWithNoHref()
     {
         $page = new Page();
-        $page->setAttributes(array('label' => 'Foo'));
+        $page->setProperties(array('label' => 'Foo'));
 
         $reflectionClass = new ReflectionClass($this->helper);
         $htmlify = $reflectionClass->getMethod('htmlify');

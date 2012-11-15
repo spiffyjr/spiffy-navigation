@@ -5,19 +5,30 @@ namespace SpiffyNavigation\Service;
 use InvalidArgumentException;
 use RecursiveIteratorIterator;
 use RuntimeException;
-use SpiffyNavigation\AbstractContainer;
-use SpiffyNavigation\Page\PageInterface;
+use SpiffyNavigation\Container;
+use SpiffyNavigation\Listener;
+use SpiffyNavigation\NavigationEvent;
 use SpiffyNavigation\Page\Page;
+use Zend\EventManager\EventManager;
+use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Router\RouteStackInterface;
 
 class Navigation
 {
+    const EVENT_GET_HREF  = 'get.href';
+    const EVENT_IS_ACTIVE = 'is.active';
+
     /**
      * Array of containers.
      * @var array
      */
     protected $containers = array();
+
+    /**
+     * @var EventManagerInterface
+     */
+    protected $events;
 
     /**
      * Href cache using object hash.
@@ -51,12 +62,58 @@ class Navigation
     protected $routeMatch;
 
     /**
+     * Register the default events for this controller
+     *
+     * @return void
+     */
+    protected function attachDefaultListeners()
+    {
+        $events = $this->getEventManager();
+        $events->attach(new Listener\HrefListener());
+    }
+
+    /**
+     * Set the event manager instance used by this context
+     *
+     * @param  EventManagerInterface $events
+     * @return Navigation
+     */
+    public function setEventManager(EventManagerInterface $events)
+    {
+        $events->setIdentifiers(array(
+            'Zend\Stdlib\DispatchableInterface',
+            __CLASS__,
+            get_called_class()
+        ));
+        $this->events = $events;
+        $this->attachDefaultListeners();
+
+        return $this;
+    }
+
+    /**
+     * Retrieve the event manager
+     *
+     * Lazy-loads an EventManager instance if none registered.
+     *
+     * @return EventManagerInterface
+     */
+    public function getEventManager()
+    {
+        if (!$this->events) {
+            $this->setEventManager(new EventManager());
+        }
+
+        return $this->events;
+    }
+
+    /**
      * Check if a page is marked active.
      *
-     * @param PageInterface $page
+     * @param Page $page
      * @return bool
      */
-    public function isActive(PageInterface $page)
+    public function isActive(Page $page)
     {
         $hash = spl_object_hash($page);
 
@@ -66,10 +123,10 @@ class Navigation
 
         $active = false;
         if ($this->getRouteMatch()) {
-            $attrs = $page->getAttributes();
+            $props = $page->getProperties();
             $name  = $this->getRouteMatch()->getMatchedRouteName();
 
-            if (isset($attrs['route']) && $attrs['route'] == $name) {
+            if (isset($props['route']) && $props['route'] == $name) {
                 $active = true;
             } else if ($this->getIsActiveRecursion()) {
                 $iterator = new RecursiveIteratorIterator($page, RecursiveIteratorIterator::CHILD_FIRST);
@@ -91,11 +148,11 @@ class Navigation
     /**
      * Get the href for a page.
      *
-     * @param PageInterface $page
+     * @param Page $page
      * @return string
      * @throws RuntimeException when an href can not be generated.
      */
-    public function getHref(PageInterface $page)
+    public function getHref(Page $page)
     {
         $hash = spl_object_hash($page);
 
@@ -103,25 +160,15 @@ class Navigation
             return $this->hrefCache[$hash];
         }
 
-        $href  = null;
-        $attrs = $page->getAttributes();
-        if (isset($attrs['href'])) {
-            $href = $attrs['href'];
-        } else if (isset($attrs['uri'])) {
-            $href = $attrs['uri'];
-        } else if (isset($attrs['route'])) {
-            if (!$this->getRouter()) {
-                throw new RuntimeException('Cannot construct href from route with no router');
-            }
+        $event = new NavigationEvent();
+        $event->setNavigation($this)
+              ->setTarget($page);
 
-            $params = isset($attrs['params']) ? $attrs['params'] : array();
-            $href   = $this->getRouter()->assemble($params, array('name' => $attrs['route']));
-        } else {
+        $this->getEventManager()->trigger(self::EVENT_GET_HREF, $event);
+        $href = $event->getResult();
+
+        if (!$href) {
             throw new RuntimeException('Unable to construct href');
-        }
-
-        if (isset($attrs['fragment'])) {
-            $href .= '#' . trim($attrs['fragment'], '#');
         }
 
         $this->hrefCache[$hash] = $href;
@@ -132,11 +179,11 @@ class Navigation
      * Add a container to the stack.
      *
      * @param string $name
-     * @param AbstractContainer $container
+     * @param Container $container
      * @return Navigation
      * @throws InvalidArgumentException on duplicate container
      */
-    public function addContainer($name, AbstractContainer $container)
+    public function addContainer($name, Container $container)
     {
         if ($this->hasContainer($name)) {
             throw new InvalidArgumentException(sprintf(
@@ -152,7 +199,7 @@ class Navigation
      * Get a container by name.
      *
      * @param string $name
-     * @return AbstractContainer
+     * @return Container
      * @throws InvalidArgumentException on missing container
      */
     public function getContainer($name)
@@ -258,7 +305,10 @@ class Navigation
      */
     public function setIsActiveRecursion($isActiveRecursion)
     {
-        $this->isActiveRecursion = $isActiveRecursion;
+        if ($isActiveRecursion != $this->isActiveRecursion) {
+            $this->isActiveRecursion = $isActiveRecursion;
+            $this->isActiveCache     = array();
+        }
         return $this;
     }
 

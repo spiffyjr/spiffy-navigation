@@ -3,7 +3,8 @@
 namespace SpiffyNavigationTest;
 
 use PHPUnit_Framework_TestCase;
-use SpiffyNavigation\Page\Page;
+use SpiffyNavigation\Container;
+use SpiffyNavigation\Page\PageFactory;
 use SpiffyNavigation\Service\Navigation;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Service\ServiceManagerConfig;
@@ -23,12 +24,12 @@ abstract class AbstractTest extends PHPUnit_Framework_TestCase
     protected $nav;
 
     /**
-     * @var \SpiffyNavigation\AbstractContainer
+     * @var Container
      */
     protected $container1;
 
     /**
-     * @var \SpiffyNavigation\AbstractContainer
+     * @var Container
      */
     protected $container2;
 
@@ -48,8 +49,8 @@ abstract class AbstractTest extends PHPUnit_Framework_TestCase
         // setup containers from config
         $this->nav  = new Navigation();
 
-        $this->container1 = Page::factory(include __DIR__ . '/_files/config/container1.php');
-        $this->container2 = Page::factory(include __DIR__ . '/_files/config/container2.php');
+        $this->container1 = Container::create(include __DIR__ . '/_files/config/container1.php');
+        $this->container2 = Container::create(include __DIR__ . '/_files/config/container2.php');
 
         $this->nav->addContainer('container1', $this->container1);
         $this->nav->addContainer('container2', $this->container2);
