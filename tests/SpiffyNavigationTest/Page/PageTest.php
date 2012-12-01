@@ -5,7 +5,7 @@ namespace SpiffyNavigationTest\Page;
 use SpiffyNavigation\Page\Page;
 use SpiffyNavigationTest\AbstractTest;
 
-class AbstractPageTest extends AbstractTest
+class PageTest extends AbstractTest
 {
     public function testInvalidArgumentExceptionIsThrownOnInvalidChildType()
     {

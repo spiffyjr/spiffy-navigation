@@ -26,23 +26,6 @@ class Container implements RecursiveIterator
     protected $children = array();
 
     /**
-     * Creates a container from a spec.
-     *
-     * @param array $spec
-     * @return Container
-     */
-    public static function create(array $spec)
-    {
-        $container = new Container();
-
-        foreach($spec as $pageSpec) {
-            $container->addPage(PageFactory::create($pageSpec));
-        }
-
-        return $container;
-    }
-
-    /**
      * Return the current element
      *
      * @link http://php.net/manual/en/iterator.current.php

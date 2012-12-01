@@ -2,7 +2,7 @@
 
 namespace SpiffyNavigationTest;
 
-class AbstractContainerTest extends AbstractTest
+class ContainerTest extends AbstractTest
 {
     public function testFindOneByName()
     {
