@@ -21,6 +21,12 @@ abstract class AbstractHelper extends AbstractHtmlElement
     protected $container = null;
 
     /**
+     * Partial view script to use.
+     * @var string
+     */
+    protected $partial = null;
+
+    /**
      * @param \SpiffyNavigation\Service\Navigation $navigation
      */
     public function __construct(Navigation $navigation)
@@ -75,5 +81,30 @@ abstract class AbstractHelper extends AbstractHtmlElement
         }
 
         return $input;
+    }
+
+    /**
+     * Sets which partial view script to use.
+     *
+     * @param  string $partial partial view script or null
+     * @return AbstractHelper
+     */
+    public function setPartial($partial)
+    {
+        if (null === $partial || is_string($partial)) {
+            $this->partial = $partial;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns partial view script to use for rendering menu
+     *
+     * @return string|null
+     */
+    public function getPartial()
+    {
+        return $this->partial;
     }
 }
