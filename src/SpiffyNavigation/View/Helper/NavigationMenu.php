@@ -97,8 +97,7 @@ class NavigationMenu extends AbstractHelper
             'navigation' => $this->navigation
         );
 
-        $partialHelper = $this->view->plugin('partial');
-        return $partialHelper($partial, $model);
+        return $this->view->render($partial, $model);
     }
 
     /**
