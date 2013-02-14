@@ -33,12 +33,15 @@ class NavigationMenu extends AbstractHelper
         $container = $this->getContainer($container);
         $options   = new Options\NavigationMenu($options);
         $iterator  = new RecursiveIteratorIterator($container, RecursiveIteratorIterator::SELF_FIRST);
+        $iterator->setMaxDepth($options->getMaxDepth());
 
         /** @var \SpiffyNavigation\Page\Page $page */
         $prevDepth = -1;
         foreach($iterator as $page) {
             $depth = $iterator->getDepth();
-
+            if ($depth == $options->getMinDepth()) {
+                continue;
+            }
             if ($depth > $prevDepth) {
                 $html .= sprintf('<ul%s>', $depth == 0 ? ' class="' . $options->getUlClass() .'"' : '');
             } else if ($prevDepth > $depth) {
