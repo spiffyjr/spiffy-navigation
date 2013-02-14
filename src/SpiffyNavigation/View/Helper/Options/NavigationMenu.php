@@ -7,6 +7,11 @@ use Zend\Stdlib\AbstractOptions;
 class NavigationMenu extends AbstractOptions
 {
     /**
+     * @var string
+     */
+    protected $activeClass = "active";
+
+    /**
      * Class of the base ul element.
      * @var string
      */
@@ -14,6 +19,7 @@ class NavigationMenu extends AbstractOptions
 
     /**
      * @param string $ulClass
+     * @return NavigationMenu
      */
     public function setUlClass($ulClass)
     {
