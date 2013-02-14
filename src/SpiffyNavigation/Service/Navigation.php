@@ -128,6 +128,12 @@ class Navigation
 
             if (isset($props['route']) && $props['route'] == $name) {
                 $active = true;
+                if(isset($props['params'])) {
+                    $tmpRouteParams = $this->getRouteMatch()->getParams();
+                    if(!$this->paramsAreEquals($props['params'], $tmpRouteParams) && !$page->hasChildren()) {
+                        $active = false;
+                    }
+                }
             } else if ($this->getIsActiveRecursion()) {
                 $iterator = new RecursiveIteratorIterator($page, RecursiveIteratorIterator::CHILD_FIRST);
 
@@ -143,6 +149,17 @@ class Navigation
 
         $this->isActiveCache[$hash] = $active;
         return $active;
+    }
+
+    protected function paramsAreEquals($pageParams, $routeParams)
+    {
+        $routeParams['controller'] = $routeParams['__CONTROLLER__'];
+        unset($routeParams['__CONTROLLER__']);
+        unset($routeParams['__NAMESPACE__']);
+        if($pageParams == $routeParams) {
+            return true;
+        }
+        return false;
     }
 
     /**

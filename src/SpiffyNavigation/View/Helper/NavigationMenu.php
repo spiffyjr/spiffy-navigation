@@ -55,7 +55,7 @@ class NavigationMenu extends AbstractHelper
                 $html .= '</li>';
             }
 
-            $liClass = $this->navigation->isActive($page) ? ' class="active"' : '';
+            $liClass = $this->navigation->isActive($page) ? ' class="'.$options->getActiveClass().'"' : '';
             $html .= sprintf('<li%s>%s', $liClass, $this->htmlify($page));
 
             $prevDepth = $depth;
