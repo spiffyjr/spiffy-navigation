@@ -33,14 +33,18 @@ class NavigationMenu extends AbstractHelper
         $container = $this->getContainer($container);
         $options   = new Options\NavigationMenu($options);
         $iterator  = new RecursiveIteratorIterator($container, RecursiveIteratorIterator::SELF_FIRST);
+        $iterator->setMaxDepth($options->getMaxDepth());
 
         /** @var \SpiffyNavigation\Page\Page $page */
         $prevDepth = -1;
         foreach($iterator as $page) {
             $depth = $iterator->getDepth();
-
+            if ($depth == $options->getMinDepth()) {
+                $prevDepth = $depth;
+                continue;
+            }
             if ($depth > $prevDepth) {
-                $html .= sprintf('<ul%s>', $depth == 0 ? ' class="' . $options->getUlClass() .'"' : '');
+                $html .= sprintf('<ul%s>', $prevDepth == $options->getMinDepth() ? ' class="' . $options->getUlClass() .'"' : '');
             } else if ($prevDepth > $depth) {
                 for ($i = $prevDepth; $i > $depth; $i--) {
                     $html .= '</li>';
@@ -51,7 +55,7 @@ class NavigationMenu extends AbstractHelper
                 $html .= '</li>';
             }
 
-            $liClass = $this->navigation->isActive($page) ? ' class="active"' : '';
+            $liClass = $this->navigation->isActive($page) ? ' class="'.$options->getActiveClass().'"' : '';
             $html .= sprintf('<li%s>%s', $liClass, $this->htmlify($page));
 
             $prevDepth = $depth;
@@ -64,6 +68,40 @@ class NavigationMenu extends AbstractHelper
         }
 
         return $html;
+    }
+
+    /**
+     * Renders the given $container by invoking the partial view helper
+     *
+     * The container will simply be passed on as a model to the view script
+     * as-is, and will be available in the partial script as 'container', e.g.
+     * <code>echo 'Number of pages: ', count($this->container);</code>.
+     *
+     * @param string|\SpiffyNavigation\Container|null $container [optional] container to pass to view script.
+     * @param string $partial [optional] partial view script to use.
+     * @return string
+     * @throws RuntimeException if no partial provided
+     */
+    public function renderPartial($container = null, $partial = null)
+    {
+        $container = $this->getContainer($container);
+
+        if (null === $partial) {
+            $partial = $this->getPartial();
+        }
+
+        if (empty($partial)) {
+            throw new RuntimeException(
+                'Unable to render menu: No partial view script provided'
+            );
+        }
+
+        $model = array(
+            'container'  => $container,
+            'navigation' => $this->navigation
+        );
+
+        return $this->view->render($partial, $model);
     }
 
     /**
