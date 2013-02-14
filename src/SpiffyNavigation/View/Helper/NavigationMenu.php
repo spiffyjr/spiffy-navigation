@@ -40,10 +40,11 @@ class NavigationMenu extends AbstractHelper
         foreach($iterator as $page) {
             $depth = $iterator->getDepth();
             if ($depth == $options->getMinDepth()) {
+                $prevDepth = $depth;
                 continue;
             }
             if ($depth > $prevDepth) {
-                $html .= sprintf('<ul%s>', $depth == 0 ? ' class="' . $options->getUlClass() .'"' : '');
+                $html .= sprintf('<ul%s>', $prevDepth == $options->getMinDepth() ? ' class="' . $options->getUlClass() .'"' : '');
             } else if ($prevDepth > $depth) {
                 for ($i = $prevDepth; $i > $depth; $i--) {
                     $html .= '</li>';
