@@ -30,17 +30,27 @@ class NavigationMenu extends AbstractHelper
     public function renderMenu($container = null, array $options = array())
     {
         $html      = '';
+
         $container = $this->getContainer($container);
         $options   = new Options\NavigationMenu($options);
         $iterator  = new RecursiveIteratorIterator($container, RecursiveIteratorIterator::SELF_FIRST);
+        $iterator->setMaxDepth($options->getMaxDepth());
 
         /** @var \SpiffyNavigation\Page\Page $page */
         $prevDepth = -1;
         foreach($iterator as $page) {
+            $isActive = $this->navigation->isActive($page);
             $depth = $iterator->getDepth();
-
+            if ($depth == $options->getMinDepth()) {
+                $prevDepth = $depth;
+                continue;
+            }
+            if ($options->getMinDepth() > -1 && !$this->navigation->isActive($page->getParent())) {
+                $prevDepth = $depth;
+                continue;
+            }
             if ($depth > $prevDepth) {
-                $html .= sprintf('<ul%s>', $depth == 0 ? ' class="' . $options->getUlClass() .'"' : '');
+                $html .= sprintf('<ul%s>', $prevDepth == $options->getMinDepth() ? ' class="' . $options->getUlClass() .'"' : '');
             } else if ($prevDepth > $depth) {
                 for ($i = $prevDepth; $i > $depth; $i--) {
                     $html .= '</li>';
@@ -51,14 +61,17 @@ class NavigationMenu extends AbstractHelper
                 $html .= '</li>';
             }
 
-            $liClass = $this->navigation->isActive($page) ? ' class="active"' : '';
+            $liClass = $isActive ? ' class="' . $options->getActiveClass() . '"' : '';
             $html .= sprintf('<li%s>%s', $liClass, $this->htmlify($page));
 
             $prevDepth = $depth;
         }
 
         if ($html) {
-            for ($i = $prevDepth+1; $i > 0; $i--) {
+            if ($options->getMinDepth() == -1) {
+                $prevDepth++;
+            }
+            for ($i = $prevDepth; $i > 0; $i--) {
                 $html .= '</li></ul>';
             }
         }
