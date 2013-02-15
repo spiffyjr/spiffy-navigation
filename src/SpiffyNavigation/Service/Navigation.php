@@ -158,9 +158,11 @@ class Navigation
      */
     protected function paramsAreEquals($pageParams, $routeParams)
     {
-        $routeParams['controller'] = $routeParams['__CONTROLLER__'];
-        unset($routeParams['__CONTROLLER__']);
-        unset($routeParams['__NAMESPACE__']);
+        if (isset($routeParams['__CONTROLLER__'])) {
+            $routeParams['controller'] = $routeParams['__CONTROLLER__'];
+            unset($routeParams['__CONTROLLER__']);
+            unset($routeParams['__NAMESPACE__']);
+        }
         if($pageParams == $routeParams) {
             return true;
         }

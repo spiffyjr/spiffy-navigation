@@ -5,6 +5,7 @@ namespace SpiffyNavigationTest\View\Helper;
 use ReflectionClass;
 use SpiffyNavigation\Page\Page;
 use SpiffyNavigationTest\AbstractTest;
+use SpiffyNavigation\ContainerFactory;
 
 class NavigationMenuTest extends AbstractTest
 {
@@ -52,5 +53,51 @@ class NavigationMenuTest extends AbstractTest
         $htmlify->setAccessible(true);
 
         $this->assertEquals('<span>Foo</span>', $htmlify->invoke($this->helper, $page));
+    }
+
+    /**
+     * Use case: We show a first menu with all main sections like 'test' and 'foo'
+     *
+     */
+    public function testMaxDepth()
+    {
+        $this->setUpRouteForTreeMenu();
+        $this->assertEquals(
+            $this->asset('expected/menu3MaxDepth.html'),
+            $this->helper->renderMenu(
+                'container3',
+                array('maxDepth' => 0)
+            )
+        );
+    }
+
+    /**
+     * Use case: We want to show the 'submenu' of the active menu 'foo'
+     */
+    public function testMinDepth()
+    {
+        $this->setUpRouteForTreeMenu();
+        $this->assertEquals(
+            $this->asset('expected/menu3MinDepth.html'),
+            $this->helper->renderMenu(
+                'container3',
+                array('minDepth' => 0)
+            )
+        );
+    }
+
+    /**
+     * Current route defined to match foo/list, so we get two <li class="active">
+     */
+    public function testActiveClass()
+    {
+        $this->setUpRouteForTreeMenu();
+        $this->assertEquals(
+            $this->asset('expected/menu3ActiveClass.html'),
+            $this->helper->renderMenu(
+                'container3',
+                array('activeClass' => 'myActiveClass')
+            )
+        );
     }
 }

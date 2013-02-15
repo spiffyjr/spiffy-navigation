@@ -30,6 +30,7 @@ class NavigationMenu extends AbstractHelper
     public function renderMenu($container = null, array $options = array())
     {
         $html      = '';
+
         $container = $this->getContainer($container);
         $options   = new Options\NavigationMenu($options);
         $iterator  = new RecursiveIteratorIterator($container, RecursiveIteratorIterator::SELF_FIRST);
@@ -38,8 +39,13 @@ class NavigationMenu extends AbstractHelper
         /** @var \SpiffyNavigation\Page\Page $page */
         $prevDepth = -1;
         foreach($iterator as $page) {
+            $isActive = $this->navigation->isActive($page);
             $depth = $iterator->getDepth();
             if ($depth == $options->getMinDepth()) {
+                $prevDepth = $depth;
+                continue;
+            }
+            if ($options->getMinDepth() > -1 && !$this->navigation->isActive($page->getParent())) {
                 $prevDepth = $depth;
                 continue;
             }
@@ -55,14 +61,17 @@ class NavigationMenu extends AbstractHelper
                 $html .= '</li>';
             }
 
-            $liClass = $this->navigation->isActive($page) ? ' class="' . $options->getActiveClass() . '"' : '';
+            $liClass = $isActive ? ' class="' . $options->getActiveClass() . '"' : '';
             $html .= sprintf('<li%s>%s', $liClass, $this->htmlify($page));
 
             $prevDepth = $depth;
         }
 
         if ($html) {
-            for ($i = $prevDepth+1; $i > 0; $i--) {
+            if ($options->getMinDepth() == -1) {
+                $prevDepth++;
+            }
+            for ($i = $prevDepth; $i > 0; $i--) {
                 $html .= '</li></ul>';
             }
         }
