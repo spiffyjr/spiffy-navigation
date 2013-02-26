@@ -1,0 +1,6 @@
+<?php
+$html = '';
+foreach($container as $page) {
+    $html.= sprintf('<li class="partial"><a href="%s">%s</a></li>', $navigation->getHref($page), $page->getName());
+}
+echo $html;

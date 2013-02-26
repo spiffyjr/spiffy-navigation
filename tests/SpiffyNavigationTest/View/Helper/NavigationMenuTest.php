@@ -53,4 +53,9 @@ class NavigationMenuTest extends AbstractTest
 
         $this->assertEquals('<span>Foo</span>', $htmlify->invoke($this->helper, $page));
     }
+
+    public function testRenderPartial()
+    {
+        $this->assertEquals($this->asset('expected/menu2.html'), $this->helper->renderPartial('container1', 'partial1.phtml'));
+    }
 }
