@@ -67,6 +67,40 @@ class NavigationMenu extends AbstractHelper
     }
 
     /**
+     * Renders the given $container by invoking the partial view helper
+     *
+     * The container will simply be passed on as a model to the view script
+     * as-is, and will be available in the partial script as 'container', e.g.
+     * <code>echo 'Number of pages: ', count($this->container);</code>.
+     *
+     * @param string|\SpiffyNavigation\Container|null $container [optional] container to pass to view script.
+     * @param string $partial [optional] partial view script to use.
+     * @return string
+     * @throws RuntimeException if no partial provided
+     */
+    public function renderPartial($container = null, $partial = null)
+    {
+        $container = $this->getContainer($container);
+
+        if (null === $partial) {
+            $partial = $this->getPartial();
+        }
+
+        if (empty($partial)) {
+            throw new RuntimeException(
+                'Unable to render menu: No partial view script provided'
+            );
+        }
+
+        $model = array(
+            'container'  => $container,
+            'navigation' => $this->navigation
+        );
+
+        return $this->view->render($partial, $model);
+    }
+
+    /**
      * Default render.
      *
      * @param string|\SpiffyNavigation\Container|null $container

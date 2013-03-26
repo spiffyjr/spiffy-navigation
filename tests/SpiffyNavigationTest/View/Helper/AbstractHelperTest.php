@@ -20,4 +20,30 @@ class AbstractHelperTest extends AbstractTest
 
         $this->assertEquals($this->container1, $container);
     }
+
+    public function testSetPartial()
+    {
+        $helper = new SimpleHelper($this->nav);
+        $helper->setPartial('partials/test.phtml');
+
+        $this->assertEquals('partials/test.phtml', $helper->getPartial());
+    }
+
+    public function testSetInvalidPartialIgnored()
+    {
+        $helper = new SimpleHelper($this->nav);
+        $helper->setPartial(new \stdClass());
+
+        $this->assertNull($helper->getPartial());
+    }
+
+    public function testResetPartialToNull()
+    {
+        $helper = new SimpleHelper($this->nav);
+
+        $helper->setPartial('partials/test.phtml');
+        $helper->setPartial(null);
+
+        $this->assertNull($helper->getPartial());
+    }
 }
