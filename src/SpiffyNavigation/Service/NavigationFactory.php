@@ -26,8 +26,10 @@ class NavigationFactory implements FactoryInterface
 
         $config     = $config['spiffynavigation'];
         $navigation = new Navigation();
+        $sortKey = (isset($config['containers']['sortKey'])) ? $config['containers']['sortKey'] : 'order';
 
         foreach((array) $config['containers'] as $containerName => $container) {
+            $container = $this->sortContainer($container, $sortKey);
             $navigation->addContainer($containerName, ContainerFactory::create($container));
         }
 
@@ -39,5 +41,27 @@ class NavigationFactory implements FactoryInterface
         $navigation->setRouter($router);
 
         return $navigation;
+    }
+
+    /**
+     * set order on the container pages
+     * 
+     * @param array  $container Container
+     * @param String $keyName   Name of the key to sort
+     * 
+     * @return array
+     */
+    public function sortContainer($container, $keyName)
+    {
+        $return = array();
+        foreach ($container as $page) {
+            if (isset($page[$keyName])) {
+                $return[$page[$keyName]] = $page;
+            } else {
+                $return[] = $page;
+            }
+        }
+        ksort($return);
+        return array_values($return);
     }
 }
