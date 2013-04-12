@@ -47,21 +47,22 @@ class NavigationFactory implements FactoryInterface
      * set order on the container pages
      * 
      * @param array  $container Container
-     * @param String $keyName   Name of the key to sort
+     * @param String $order     Name of the key to sort
      * 
      * @return array
      */
-    public function sortContainer($container, $keyName)
+    public function sortContainer($container, $order)
     {
-        $return = array();
-        foreach ($container as $page) {
-            if (isset($page[$keyName])) {
-                $return[$page[$keyName]] = $page;
-            } else {
-                $return[] = $page;
-            }
+        $keys = array();
+        foreach ($container as $key => $page) {
+            $value = (isset($page[$order])) ? (int) $page[$order] : 0;
+            $keys[$key] = $value;
         }
-        ksort($return);
-        return array_values($return);
+        asort($keys);
+        $return = array();
+        foreach ($keys as $key => $order) {
+            $return[] = $container[$key];
+        }
+        return $return;
     }
 }
