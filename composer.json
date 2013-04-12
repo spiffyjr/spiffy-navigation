@@ -1,5 +1,5 @@
 {
-    "name": "betooliveira79/spiffy-navigation",
+    "name": "spiffy/spiffy-navigation",
     "description": "Zend Framework 2 Module that aims to replace Zend\\Navigation",
     "type": "library",
     "keywords": [
