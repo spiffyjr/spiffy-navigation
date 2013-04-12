@@ -37,4 +37,14 @@ class NavigationFactoryTest extends AbstractTest
         $service = $factory->createService($this->serviceManager);
         $this->assertInstanceOf('SpiffyNavigation\Service\Navigation', $service);
     }
+
+    public function testNavigationServiceSortContainerFunction()
+    {
+        $currentConfig = include 'SpiffyNavigationTest/_files/config/container2.php';
+        $expectedConfig = include 'SpiffyNavigationTest/_files/expected/container-ordained.php';
+        $factory = new NavigationFactory();
+        $result = $factory->sortContainer($currentConfig);
+
+        $this->assertEquals($expectedConfig, $result);
+    }
 }
