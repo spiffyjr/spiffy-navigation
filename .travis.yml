@@ -7,7 +7,7 @@ php:
 before_install:
  - curl -s https://getcomposer.org/installer | php
  - php composer.phar install --dev --no-interaction
- - cd tests
+ - cd test
 
 script:
  - ../vendor/bin/phpunit
