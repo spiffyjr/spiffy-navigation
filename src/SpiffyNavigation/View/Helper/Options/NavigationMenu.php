@@ -28,6 +28,11 @@ class NavigationMenu extends AbstractOptions
     protected $ulClass = 'nav';
 
     /**
+     * @var bool
+     */
+    protected $dropdown = false;
+
+    /**
      * @param string $ulClass
      * @return NavigationMenu
      */
@@ -98,4 +103,21 @@ class NavigationMenu extends AbstractOptions
     {
         return $this->activeClass;
     }
+
+    /**
+     * @param boolean $dropdown
+     */
+    public function setDropdown($dropdown)
+    {
+        $this->dropdown = $dropdown;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getDropdown()
+    {
+        return $this->dropdown;
+    }
+
 }

@@ -50,7 +50,20 @@ class NavigationMenu extends AbstractHelper
                 continue;
             }
             if ($depth > $prevDepth) {
-                $html .= sprintf('<ul%s>', $prevDepth == $options->getMinDepth() ? ' class="' . $options->getUlClass() .'"' : '');
+                $ulClass = array();
+                $ulRole = '';
+                if ($prevDepth == $options->getMinDepth()) {
+                    $ulClass[] = $options->getUlClass();
+                }
+                if ($depth > 0 && $options->getDropdown() === false) {
+                    $ulClass[] = 'dropdown-menu';
+                    $ulRole = 'menu';
+                }
+                $html .= sprintf(
+                    '<ul%s%s>',
+                    count($ulClass) ? ' class="' . implode(' ', $ulClass).'"' : '',
+                    $ulRole ? 'role="'.$ulRole.'"' : ''
+                );
             } else if ($prevDepth > $depth) {
                 for ($i = $prevDepth; $i > $depth; $i--) {
                     $html .= '</li>';
@@ -61,8 +74,22 @@ class NavigationMenu extends AbstractHelper
                 $html .= '</li>';
             }
 
-            $liClass = $isActive ? ' class="' . $options->getActiveClass() . '"' : '';
-            $html .= sprintf('<li%s>%s', $liClass, $this->htmlify($page));
+            $liClass = array();
+            $dataToggle = '';
+            if ($isActive) {
+                $liClass[] = $options->getActiveClass();
+            }
+            if ($page->hasChildren() && $options->getDropdown() === false) {
+                $liClass[] = 'dropdown';
+//                $dataToggle = ' data-toggle="dropdown"';
+            }
+
+            $html .= sprintf(
+                '<li%s%s>%s',
+                count($liClass) ? ' class="' . implode(' ', $liClass).'"' : '',
+                $dataToggle,
+                $this->htmlify($page, $options)
+            );
 
             $prevDepth = $depth;
         }
@@ -135,7 +162,7 @@ class NavigationMenu extends AbstractHelper
      * @param bool $escapeLabel
      * @return string
      */
-    protected function htmlify(Page $page, $escapeLabel = true)
+    protected function htmlify(Page $page, Options\NavigationMenu $options, $escapeLabel = true)
     {
         if ($page->getProperty('label')) {
             $label = $page->getProperty('label');
@@ -154,6 +181,11 @@ class NavigationMenu extends AbstractHelper
         if ($href) {
             $element         = 'a';
             $attribs['href'] = $href;
+            if ($page->hasChildren() && $options->getDropdown() === false) {
+                $label .= '<b class="caret"></b>';
+                $attribs['class'] = 'dropdown-toggle';
+                $attribs['data-toggle'] = 'dropdown';
+            }
         } else {
             $element = 'span';
         }
