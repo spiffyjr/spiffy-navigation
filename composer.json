@@ -25,7 +25,8 @@
 
     "autoload": {
         "psr-0": {
-            "SpiffyNavigation\\": "src/"
+            "SpiffyNavigation": "src/",
+            "SpiffyNavigationTest": "test/"
         }
     }
 }
