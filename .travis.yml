@@ -1,13 +1,16 @@
 language: php
 
 php:
-  - 5.3
+  - 5.3.3
   - 5.4
 
 before_install:
  - curl -s https://getcomposer.org/installer | php
- - php composer.phar install --dev --no-interaction
- - cd test
+ - php composer.phar install --prefer-source --dev --no-interaction
+ - mkdir -p build/logs
 
 script:
- - ../vendor/bin/phpunit
+ - php vendor/bin/phpunit --bootstrap test/Bootstrap.php
+
+after_script:
+ - php vendor/bin/coveralls
