@@ -3,8 +3,10 @@
 namespace SpiffyNavigationTest\View\Helper;
 
 use ReflectionClass;
+use SpiffyNavigation\Listener\RbacListener;
 use SpiffyNavigation\Page\Page;
 use SpiffyNavigationTest\AbstractTest;
+use Zend\Permissions\Rbac\Rbac;
 
 class NavigationMenuTest extends AbstractTest
 {
@@ -21,6 +23,21 @@ class NavigationMenuTest extends AbstractTest
     public function testRenderMenu()
     {
         $this->assertEquals($this->asset('expected/menu1.html'), $this->helper->renderMenu('container1'));
+    }
+
+    public function testIsAllowedRbac()
+    {
+        $rbac = new Rbac();
+
+        $this->nav->getEventManager()->attach(new RbacListener($rbac));
+        $this->assertEquals($this->asset('expected/menu3RbacNone.html'), $this->helper->renderMenu('container3'));
+
+        $rbac->addRole('foo');
+        $rbac->getRole('foo')->addPermission('child2');
+        $this->assertEquals($this->asset('expected/menu3RbacChild2.html'), $this->helper->renderMenu('container3'));
+
+        $rbac->getRole('foo')->addPermission('child3-add');
+        $this->assertEquals($this->asset('expected/menu3RbacAll.html'), $this->helper->renderMenu('container3'));
     }
 
     public function testHtmlifyIgnoresInvalidAttributes()

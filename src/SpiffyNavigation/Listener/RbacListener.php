@@ -42,6 +42,9 @@ class RbacListener extends AbstractListenerAggregate
         $options = $page->getOptions();
 
         if (isset($options['role']) && isset($options['permission'])) {
+            if (!$this->rbac->hasRole($options['role'])) {
+                return false;
+            }
             if (isset($options['assertion'])) {
                 return $this->rbac->isGranted($options['role'], $options['permission'], $options['assertion']);
             }

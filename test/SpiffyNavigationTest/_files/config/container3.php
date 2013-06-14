@@ -12,6 +12,8 @@ return array(
     array(
         'name' => 'child2',
         'options' => array(
+            'role' => 'foo',
+            'permission' => 'child2',
             'label' => 'child2Label',
             'route' => 'test',
             'params' => array(
@@ -69,6 +71,9 @@ return array(
             array(
                 'name' => 'child3-add',
                 'options' => array(
+                    'role' => 'foo',
+                    'permission' => 'child3-add',
+
                     'label' => 'child3: Create',
                     'route' => 'foo',
                     'params' => array(

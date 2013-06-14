@@ -196,7 +196,7 @@ class NavigationTest extends AbstractTest
         $nav->removeContainer('container1');
 
         $containers = $nav->getContainers();
-        $this->assertCount(1, $containers);
+        $this->assertCount(2, $containers);
         $this->assertEquals($this->container2, $containers['container2']);
     }
 

@@ -4,6 +4,7 @@ namespace SpiffyNavigation\View\Helper;
 
 use RecursiveIteratorIterator;
 use RuntimeException;
+use SpiffyNavigation\Filter\IsAllowedFilter;
 use SpiffyNavigation\Page\Page;
 
 class NavigationMenu extends AbstractHelper
@@ -30,9 +31,9 @@ class NavigationMenu extends AbstractHelper
     public function renderMenu($container = null, array $options = array())
     {
         $html      = '';
-        $container = $this->getContainer($container);
+        $filter    = new IsAllowedFilter($this->getContainer($container), $this->navigation);
         $options   = new NavigationMenuOptions($options);
-        $iterator  = new RecursiveIteratorIterator($container, RecursiveIteratorIterator::SELF_FIRST);
+        $iterator  = new RecursiveIteratorIterator($filter, RecursiveIteratorIterator::SELF_FIRST);
 
         /** @var \SpiffyNavigation\Page\Page $page */
         $prevDepth = -1;
@@ -52,7 +53,7 @@ class NavigationMenu extends AbstractHelper
             }
 
             $liClass = $this->navigation->isActive($page) ? ' class="active"' : '';
-            $html .= sprintf('<li%s>%s', $liClass, $this->htmlify($page));
+            $html   .= sprintf('<li%s>%s', $liClass, $this->htmlify($page));
 
             $prevDepth = $depth;
         }
