@@ -1,6 +1,6 @@
 # SpiffyNavigation Module for Zend Framework 2
 
-SpiffyNavigation is a navigation module for ZF2 intended to replace the out-of-date Zend\Navigation.
+SpiffyNavigation is a navigation module for ZF2 intended to be a replacement for Zend\Navigation when ZF3 is able to break BC.
 
 ## Project Status
 [![Master Branch Build Status](https://secure.travis-ci.org/spiffyjr/spiffy-navigation.png?branch=master)](http://travis-ci.org/spiffyjr/spiffy-navigation)
