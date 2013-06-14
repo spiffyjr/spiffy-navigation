@@ -10,7 +10,7 @@ before_install:
  - mkdir -p build/logs
 
 script:
- - php vendor/bin/phpunit --bootstrap test/Bootstrap.php
+ - php vendor/bin/phpunit --bootstrap test/bootstrap.php
 
 after_script:
  - php vendor/bin/coveralls
