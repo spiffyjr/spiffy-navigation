@@ -34,14 +34,20 @@ class NavigationMenu extends AbstractHelper
         $filter    = new IsAllowedFilter($this->getContainer($container), $this->navigation);
         $options   = new NavigationMenuOptions($options);
         $iterator  = new RecursiveIteratorIterator($filter, RecursiveIteratorIterator::SELF_FIRST);
+        $iterator->setMaxDepth($options->getMaxDepth());
 
         /** @var \SpiffyNavigation\Page\Page $page */
         $prevDepth = -1;
         foreach($iterator as $page) {
             $depth = $iterator->getDepth();
 
+            if ($depth == $options->getMinDepth()) {
+                $prevDepth = $depth;
+                continue;
+            }
+
             if ($depth > $prevDepth) {
-                $html .= sprintf('<ul%s>', $depth == 0 ? ' class="' . $options->getUlClass() .'"' : '');
+                $html .= sprintf('<ul%s>', $prevDepth == $options->getMinDepth() ? ' class="' . $options->getUlClass() .'"' : '');
             } else if ($prevDepth > $depth) {
                 for ($i = $prevDepth; $i > $depth; $i--) {
                     $html .= '</li>';
@@ -52,7 +58,7 @@ class NavigationMenu extends AbstractHelper
                 $html .= '</li>';
             }
 
-            $liClass = $this->navigation->isActive($page) ? ' class="active"' : '';
+            $liClass = $this->navigation->isActive($page) ? ' class="' . $options->getActiveClass() . '"' : '';
             $html   .= sprintf('<li%s>%s', $liClass, $this->htmlify($page));
 
             $prevDepth = $depth;
