@@ -111,3 +111,6 @@ Once you have created a container using a view helper is as simple as putting `<
 #### Options
 
 * ulClass: The class to use when generating the ul.
+* minDepth: Minimum render depth.
+* maxDepth: Maximum render depth.
+* activeClass: Active class to use for the active element.
