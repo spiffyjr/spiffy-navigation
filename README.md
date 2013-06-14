@@ -1,6 +1,11 @@
-# SpiffyNavigation Module for Zend Framework 2 [![Master Branch Build Status](https://secure.travis-ci.org/spiffyjr/spiffy-navigation.png?branch=master)](http://travis-ci.org/spiffyjr/spiffy-navigation)
+# SpiffyNavigation Module for Zend Framework 2
 
 SpiffyNavigation is a navigation module for ZF2 intended to replace the out-of-date Zend\Navigation.
+
+## Project Status
+[![Master Branch Build Status](https://secure.travis-ci.org/spiffyjr/spiffy-navigation.png?branch=master)](http://travis-ci.org/spiffyjr/spiffy-navigation)
+[![Coverage Status](https://coveralls.io/repos/spiffyjr/spiffy-navigation/badge.png?branch=master)](https://coveralls.io/r/spiffyjr/spiffy-navigation?branch=master)
+
 
 ## Requirements
  - PHP 5.3 or higher
