@@ -88,7 +88,13 @@ return array(
 
 ## Using the view helpers
 
-Once you have created a container using a view helper is as simple as putting `<?php echo $this->helperName('containerName'); ?>`.
+Once you have created a container using a view helper is as simple as putting:
+
+```php
+<?php
+
+echo $this->helperName('containerName');
+```
 
 ### NavigationMenu
 
@@ -97,15 +103,15 @@ Once you have created a container using a view helper is as simple as putting `<
 <?php
 
 // in view script
-<?php echo $this->navigationMenu('containerName'); ?>
+echo $this->navigationMenu('containerName');
 
 // or
 
-<?php echo $this->navigationMenu()->renderMenu('containerName', $options); ?>
+echo $this->navigationMenu()->renderMenu('containerName', $options);
 
 // or
 
-<?php echo $this->navigationMenu()->renderPartial('containerName', 'partialName'); ?>
+echo $this->navigationMenu()->renderPartial('containerName', 'partialName');
 ```
 
 #### Options
