@@ -22,7 +22,7 @@ class NavigationTest extends AbstractTest
         $router->addRoute('test', new Literal('/foo-bar'));
 
         $page = new Page();
-        $page->setProperties(array('route' => 'test'));
+        $page->setOptions(array('route' => 'test'));
 
         $navigation = new Navigation();
         $navigation->setRouteMatch($routeMatch);
@@ -59,7 +59,7 @@ class NavigationTest extends AbstractTest
         $router->addRoute('test', new Literal('/foo-bar'));
 
         $page = new Page();
-        $page->setProperties(array('route' => 'test'));
+        $page->setOptions(array('route' => 'test'));
 
         $navigation = new Navigation();
         $navigation->setRouteMatch($routeMatch);
@@ -86,7 +86,7 @@ class NavigationTest extends AbstractTest
         $router->addRoute('test', new Literal('/foo-bar'));
 
         $child = new Page();
-        $child->setProperties(array('route' => 'test'));
+        $child->setOptions(array('route' => 'test'));
 
         $page = new Page();
         $page->addChild($child);
@@ -107,7 +107,7 @@ class NavigationTest extends AbstractTest
         $router->addRoute('test', new Literal('/foo-bar'));
 
         $child = new Page();
-        $child->setProperties(array('route' => 'test'));
+        $child->setOptions(array('route' => 'test'));
 
         $page = new Page();
         $page->addChild($child);
@@ -129,7 +129,7 @@ class NavigationTest extends AbstractTest
         $router->addRoute('test', new Literal('/foo-bar'));
 
         $page = new Page();
-        $page->setProperties(array('route' => 'test'));
+        $page->setOptions(array('route' => 'test'));
 
         $navigation = new Navigation();
         $navigation->setRouteMatch($routeMatch);
@@ -194,7 +194,7 @@ class NavigationTest extends AbstractTest
         $nav->removeContainer('container1');
 
         $containers = $nav->getContainers();
-        $this->assertCount(2, $containers);
+        $this->assertCount(1, $containers);
         $this->assertEquals($this->container2, $containers['container2']);
     }
 
@@ -217,7 +217,7 @@ class NavigationTest extends AbstractTest
         $navigation = new Navigation();
 
         $page = new Page();
-        $page->setProperties(array('uri' => 'www.foobar.com'));
+        $page->setOptions(array('uri' => 'www.foobar.com'));
 
         // Warm cache
         $href = $navigation->getHref($page);
@@ -241,7 +241,7 @@ class NavigationTest extends AbstractTest
         $navigation = new Navigation();
 
         $page = new Page();
-        $page->setProperties(array('route' => 'test'));
+        $page->setOptions(array('route' => 'test'));
 
         $navigation->getHref($page);
     }
@@ -257,7 +257,7 @@ class NavigationTest extends AbstractTest
         $navigation->setRouter($router);
 
         $page = new Page();
-        $page->setProperties(array('route' => 'test', 'params' => array('id' => 1234)));
+        $page->setOptions(array('route' => 'test', 'params' => array('id' => 1234)));
 
         $this->assertEquals('/foo/edit/1234', $navigation->getHref($page));
     }
@@ -273,7 +273,7 @@ class NavigationTest extends AbstractTest
         $navigation->setRouter($router);
 
         $page = new Page();
-        $page->setProperties(array('route' => 'test'));
+        $page->setOptions(array('route' => 'test'));
 
         $this->assertEquals('/foo-bar', $navigation->getHref($page));
     }

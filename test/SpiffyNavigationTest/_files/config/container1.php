@@ -3,7 +3,7 @@
 return array(
     array(
         'name' => 'child1',
-        'properties' => array(
+        'options' => array(
             'uri' => 'http://www.child1.com',
         ),
         'attributes' => array(
@@ -12,7 +12,7 @@ return array(
     ),
     array(
         'name' => 'child1',
-        'properties' => array(
+        'options' => array(
             'uri' => 'http://www.child1.com',
         ),
         'attributes' => array(
@@ -21,7 +21,7 @@ return array(
     ),
     array(
         'name' => 'child2',
-        'properties' => array(
+        'options' => array(
             'uri' => 'http://www.child2.com',
             'foo' => 'bar'
         ),
@@ -31,7 +31,7 @@ return array(
     ),
     array(
         'name' => 'child3',
-        'properties' => array(
+        'options' => array(
             'uri' => 'http://www.child3.com',
             'foo' => 'bar'
         ),

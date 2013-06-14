@@ -11,19 +11,19 @@ class PageFactoryTest extends PHPUnit_Framework_TestCase
     {
         $input = array(
             'name' => 'Parent',
-            'properties' => array(
+            'options' => array(
                 'uri' => 'www.parent1.com',
             ),
             'pages' => array(
                 array(
                     'name' => 'child1',
-                    'properties' => array(
+                    'options' => array(
                         'uri' => 'www.child1.com'
                     )
                 ),
                 array(
                     'name' => 'child2',
-                    'properties' => array(
+                    'options' => array(
                         'uri' => 'www.child2.com',
                     ),
                 )
@@ -39,7 +39,7 @@ class PageFactoryTest extends PHPUnit_Framework_TestCase
     {
         $input = array(
             'name' => 'Parent',
-            'properties' => array(
+            'options' => array(
                 'uri' => 'www.parent1.com',
                 'foo' => 'bar'
             )
@@ -49,11 +49,11 @@ class PageFactoryTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $page->getProperty('foo'));
     }
 
-    public function testFactorySetsProperties()
+    public function testFactorySetsOptions()
     {
         $input = array(
             'name' => 'Parent',
-            'properties' => array(
+            'options' => array(
                 'uri' => 'www.parent1.com',
             ),
             'attributes' => array(
@@ -68,7 +68,7 @@ class PageFactoryTest extends PHPUnit_Framework_TestCase
     public function testFactoryThrowsExceptionOnMissingName()
     {
         $this->setExpectedException('InvalidArgumentException');
-        PageFactory::create(array('properties' => array('uri' => 'www.test.com')));
+        PageFactory::create(array('options' => array('uri' => 'www.test.com')));
     }
 
     public function testFactoryThrowsExceptionOnUnknownType()

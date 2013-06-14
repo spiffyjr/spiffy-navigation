@@ -20,10 +20,10 @@ class Page extends Container
     protected $attributes = array();
 
     /**
-     * Custom properties for the page.
+     * Custom options for the page.
      * @var array
      */
-    protected $properties = array();
+    protected $options = array();
 
     /**
      * Parent of this node, if any.
@@ -89,7 +89,7 @@ class Page extends Container
      */
     public function setProperty($property, $value)
     {
-        $this->properties[$property] = $value;
+        $this->options[$property] = $value;
         return $this;
     }
 
@@ -101,25 +101,47 @@ class Page extends Container
      */
     public function getProperty($property)
     {
-        return isset($this->properties[$property]) ? $this->properties[$property] : null;
+        return isset($this->options[$property]) ? $this->options[$property] : null;
     }
 
     /**
-     * @param array $properties
+     * @param array $options
      * @return Page
      */
-    public function setProperties(array $properties)
+    public function setOptions(array $options)
     {
-        $this->properties = $properties;
+        $this->options = $options;
         return $this;
     }
 
     /**
      * @return array
      */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * @deprecated
+     * @param array $properties
+     * @return $this
+     */
+    public function setProperties(array $properties)
+    {
+        trigger_error('setProperties is deprecated', E_USER_WARNING);
+        $this->options = $properties;
+        return $this;
+    }
+
+    /**
+     * @deprecated
+     * @return array
+     */
     public function getProperties()
     {
-        return $this->properties;
+        trigger_error('getProperties is deprecated', E_USER_WARNING);
+        return $this->options;
     }
 
     /**

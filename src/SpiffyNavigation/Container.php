@@ -26,10 +26,7 @@ class Container implements RecursiveIterator
     protected $children = array();
 
     /**
-     * Return the current element
-     *
-     * @link http://php.net/manual/en/iterator.current.php
-     * @return mixed Can return any type.
+     * {@inheritDoc}
      */
     public function current()
     {
@@ -37,10 +34,7 @@ class Container implements RecursiveIterator
     }
 
     /**
-     * Move forward to next element
-     *
-     * @link http://php.net/manual/en/iterator.next.php
-     * @return void Any returned value is ignored.
+     * {@inheritDoc}
      */
     public function next()
     {
@@ -48,10 +42,7 @@ class Container implements RecursiveIterator
     }
 
     /**
-     * Return the key of the current element
-     *
-     * @link http://php.net/manual/en/iterator.key.php
-     * @return int int on success, or null on failure.
+     * {@inheritDoc}
      */
     public function key()
     {
@@ -59,11 +50,7 @@ class Container implements RecursiveIterator
     }
 
     /**
-     * Checks if current position is valid
-     *
-     * @link http://php.net/manual/en/iterator.valid.php
-     * @return boolean The return value will be casted to boolean and then evaluated.
-     * Returns true on success or false on failure.
+     * {@inheritDoc}
      */
     public function valid()
     {
@@ -71,10 +58,7 @@ class Container implements RecursiveIterator
     }
 
     /**
-     * Rewind the Iterator to the first element
-     *
-     * @link http://php.net/manual/en/iterator.rewind.php
-     * @return void Any returned value is ignored.
+     * {@inheritDoc}
      */
     public function rewind()
     {
@@ -82,11 +66,7 @@ class Container implements RecursiveIterator
     }
 
     /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Returns if an iterator can be created fot the current entry.
-     *
-     * @link http://php.net/manual/en/recursiveiterator.haschildren.php
-     * @return bool true if the current entry can be iterated over, otherwise returns false.
+     * {@inheritDoc}
      */
     public function hasChildren()
     {
@@ -94,11 +74,7 @@ class Container implements RecursiveIterator
     }
 
     /**
-     * (PHP 5 &gt;= 5.1.0)<br/>
-     * Returns an iterator for the current entry.
-     *
-     * @link http://php.net/manual/en/recursiveiterator.getRoles.php
-     * @return RecursiveIterator An iterator for the current entry.
+     * {@inheritDoc}
      */
     public function getChildren()
     {
@@ -141,8 +117,7 @@ class Container implements RecursiveIterator
     /**
      * Finds all children by name.
      *
-     * @param string $property
-     * @param mixed $value
+     * @param string $value
      * @return array
      */
     public function findByName($value)

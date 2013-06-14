@@ -1,6 +1,15 @@
 <?php
-$html = '';
+$html = '<ul>';
 foreach($container as $page) {
     $html.= sprintf('<li class="partial"><a href="%s">%s</a></li>', $navigation->getHref($page), $page->getName());
+
+    if ($page->hasChildren()) {
+        $html.= '<ul>';
+        foreach($page as $child) {
+            $html.= sprintf('<li class="partial"><a href="%s">%s</a></li>', $navigation->getHref($page), $page->getName());
+        }
+        $html.= '</ul>';
+    }
 }
+$html.= '</ul>';
 echo $html;

@@ -18,7 +18,7 @@ class PageTest extends AbstractTest
     public function testSettingChildFromArray()
     {
         $page1 = new Page();
-        $page1->addChild(array('name' => 'child1', 'properties' => array('uri' => 'www.child1.com')));
+        $page1->addChild(array('name' => 'child1', 'options' => array('uri' => 'www.child1.com')));
 
         $this->assertEquals(true, $page1->hasChildren());
         $this->assertEquals(1, iterator_count($page1));

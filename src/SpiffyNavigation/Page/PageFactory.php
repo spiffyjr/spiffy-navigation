@@ -37,7 +37,12 @@ class PageFactory
         }
 
         if (isset($spec['properties'])) {
-            $page->setProperties($spec['properties']);
+            trigger_error('usage of page "properties" is deprecated in favor of "options"', E_USER_WARNING);
+            $page->setOptions($spec['properties']);
+        }
+
+        if (isset($spec['options'])) {
+            $page->setOptions($spec['options']);
         }
 
         return $page;
