@@ -1,7 +1,9 @@
 <?php
 
 return array(
-    'spiffynavigation' => array(
-        'containers' => array()
+    'spiffy_navigation' => array(
+        'containers' => array(),
+
+        'listeners' => array()
     )
 );

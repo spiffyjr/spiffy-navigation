@@ -2,13 +2,23 @@
 
 namespace SpiffyNavigation;
 
-use Zend\Mvc\MvcEvent;
+use Zend\EventManager\EventInterface;
+use Zend\ModuleManager\Feature\BootstrapListenerInterface;
 use SpiffyNavigation\View\HelperConfig;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ServiceProviderInterface;
 
-class Module
+class Module implements
+    BootstrapListenerInterface,
+    ConfigProviderInterface,
+    ServiceProviderInterface
 {
-    public function onBootstrap(MvcEvent $e)
+    /**
+     * {@inheritDoc}
+     */
+    public function onBootstrap(EventInterface $e)
     {
+        /** @var \Zend\Mvc\MvcEvent $e */
         $app = $e->getApplication();
         $sm  = $app->getServiceManager();
 
@@ -16,15 +26,17 @@ class Module
         $config->configureServiceManager($sm->get('ViewHelperManager'));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getServiceConfig()
     {
-        return array(
-            'factories' => array(
-                'SpiffyNavigation\Service\Navigation' => 'SpiffyNavigation\Service\NavigationFactory'
-            )
-        );
+        return include __DIR__ . '/../../config/service.config.php';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getConfig()
     {
         return include __DIR__ . '/../../config/module.config.php';

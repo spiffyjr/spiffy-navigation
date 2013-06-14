@@ -70,6 +70,7 @@ abstract class AbstractHelper extends AbstractHtmlElement
      *
      * @param array $input
      * @param array $valid
+     * @return array
      */
     protected function cleanAttribs(array $input, array $valid)
     {

@@ -3,6 +3,7 @@
 namespace SpiffyNavigationTest\Service;
 
 use ReflectionClass;
+use SpiffyNavigation\Listener\RbacListener;
 use SpiffyNavigationTest\AbstractTest;
 use SpiffyNavigation\Page\Page;
 use SpiffyNavigation\Service\Navigation;
@@ -10,6 +11,7 @@ use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Router\Http\Literal;
 use Zend\Mvc\Router\Http\TreeRouteStack;
 use Zend\Mvc\Router\Http\Regex as RegexRoute;
+use Zend\Permissions\Rbac\Rbac;
 
 class NavigationTest extends AbstractTest
 {
@@ -286,5 +288,38 @@ class NavigationTest extends AbstractTest
         $page = new Page();
 
         $navigation->getHref($page);
+    }
+
+    public function testIsAllowedWithNoListenersShouldReturnTrue()
+    {
+        $navigation = new Navigation();
+        $page       = new Page();
+        $this->assertTrue($navigation->isAllowed($page));
+    }
+
+    public function testIsAllowedRbac()
+    {
+        $rbac = new Rbac();
+        $rbac->addRole('foo');
+        $rbac->getRole('foo')->addPermission('bar');
+
+        $navigation = new Navigation();
+        $navigation->getEventManager()->attach(new RbacListener($rbac));
+
+        $page = new Page();
+        $page->setOptions(array('permission' => 'test'));
+        $this->assertTrue($navigation->isAllowed($page));
+
+        $page->setOptions(array('role' => 'foo', 'permission' => 'bar'));
+        $this->assertTrue($navigation->isAllowed($page));
+
+        $page->setOptions(array('role' => 'foo', 'permission' => 'baz'));
+        $this->assertFalse($navigation->isAllowed($page));
+
+        $page->setOptions(array('role' => 'foo', 'permission' => 'bar', 'assertion' => function() { return true; }));
+        $this->assertTrue($navigation->isAllowed($page));
+
+        $page->setOptions(array('role' => 'foo', 'permission' => 'bar', 'assertion' => function() { return false; }));
+        $this->assertFalse($navigation->isAllowed($page));
     }
 }

@@ -2,7 +2,7 @@
 return array(
     array(
         'name' => 'child1',
-        'properties' => array(
+        'options' => array(
             'uri' => 'http://www.child1.com',
         ),
         'attributes' => array(
@@ -11,7 +11,7 @@ return array(
     ),
     array(
         'name' => 'child2',
-        'properties' => array(
+        'options' => array(
             'label' => 'child2Label',
             'route' => 'test',
             'params' => array(
@@ -22,7 +22,7 @@ return array(
         'pages' => array(
             array(
                 'name' => 'child2-list',
-                'properties' => array(
+                'options' => array(
                     'label' => 'List All',
                     'route' => 'test',
                     'params' => array(
@@ -33,7 +33,7 @@ return array(
             ),
             array(
                 'name' => 'child2-add',
-                'properties' => array(
+                'options' => array(
                     'label' => 'Create',
                     'route' => 'test',
                     'params' => array(
@@ -46,7 +46,7 @@ return array(
     ),
     array(
         'name' => 'child3',
-        'properties' => array(
+        'options' => array(
             'label' => 'child3Label',
             'route' => 'foo',
             'params' => array(
@@ -57,7 +57,7 @@ return array(
         'pages' => array(
             array(
                 'name' => 'child3-list',
-                'properties' => array(
+                'options' => array(
                     'label' => 'child3: List All',
                     'route' => 'foo',
                     'params' => array(
@@ -68,7 +68,7 @@ return array(
             ),
             array(
                 'name' => 'child3-add',
-                'properties' => array(
+                'options' => array(
                     'label' => 'child3: Create',
                     'route' => 'foo',
                     'params' => array(

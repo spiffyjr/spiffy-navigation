@@ -16,8 +16,8 @@ use Zend\Mvc\Router\RouteStackInterface;
 
 class Navigation
 {
-    const EVENT_GET_HREF  = 'get.href';
-    const EVENT_IS_ACTIVE = 'is.active';
+    const EVENT_GET_HREF   = 'getHref';
+    const EVENT_IS_ALLOWED = 'isAllowed';
 
     /**
      * Array of containers.
@@ -108,6 +108,23 @@ class Navigation
     }
 
     /**
+     * @param Page $page
+     * @trigger self::EVENT_IS_ALLOWED
+     * @return bool
+     */
+    public function isAllowed(Page $page)
+    {
+        $event = new NavigationEvent();
+        $event->setNavigation($this)
+              ->setTarget($page);
+
+        $results = $this->getEventManager()->trigger(self::EVENT_IS_ALLOWED, $event);
+        $result  = $results->last();
+
+        return null === $result ? true : (bool) $results->last();
+    }
+
+    /**
      * Check if a page is marked active.
      *
      * @param Page $page
@@ -148,9 +165,10 @@ class Navigation
     /**
      * Get the href for a page.
      *
-     * @param Page $page
-     * @return string
-     * @throws RuntimeException when an href can not be generated.
+     * @param \SpiffyNavigation\Page\Page $page
+     * @throws \RuntimeException when an href can not be generated.
+     * @trigger self::EVENT_GET_HREF
+     * @return \SpiffyNavigation\Page\Page
      */
     public function getHref(Page $page)
     {
@@ -284,6 +302,7 @@ class Navigation
 
     /**
      * @param \Zend\Mvc\Router\RouteStackInterface $router
+     * @return $this
      */
     public function setRouter($router)
     {

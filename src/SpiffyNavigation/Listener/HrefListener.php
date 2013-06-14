@@ -5,23 +5,13 @@ namespace SpiffyNavigation\Listener;
 use RuntimeException;
 use SpiffyNavigation\NavigationEvent;
 use SpiffyNavigation\Service\Navigation;
+use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\ListenerAggregateInterface;
 
-class HrefListener implements ListenerAggregateInterface
+class HrefListener extends AbstractListenerAggregate
 {
     /**
-     * @var \Zend\Stdlib\CallbackHandler[]
-     */
-    protected $listeners = array();
-
-    /**
-     * Attach one or more listeners
-     *
-     * Implementors may add an optional $priority argument; the EventManager
-     * implementation will pass this to the aggregate.
-     *
-     * @param EventManagerInterface $events
+     * {@inheritDoc}
      */
     public function attach(EventManagerInterface $events)
     {
@@ -29,19 +19,9 @@ class HrefListener implements ListenerAggregateInterface
     }
 
     /**
-     * Detach all previously attached listeners
-     *
-     * @param EventManagerInterface $events
+     * @param NavigationEvent $e
+     * @throws \RuntimeException
      */
-    public function detach(EventManagerInterface $events)
-    {
-        foreach ($this->listeners as $index => $listener) {
-            if ($events->detach($listener)) {
-                unset($this->listeners[$index]);
-            }
-        }
-    }
-
     public function getHref(NavigationEvent $e)
     {
         if ($e->getResult()) {

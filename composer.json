@@ -16,7 +16,18 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": "2.*"
+        "zendframework/zend-console": "2.*",
+        "zendframework/zend-eventmanager": "2.*",
+        "zendframework/zend-form": "2.*",
+        "zendframework/zend-modulemanager": "2.*",
+        "zendframework/zend-mvc": "2.*",
+        "zendframework/zend-permissions-acl": "2.*",
+        "zendframework/zend-permissions-rbac": "2.*",
+        "zendframework/zend-serializer": "2.*",
+        "zendframework/zend-servicemanager": "2.*",
+        "zendframework/zend-stdlib": "2.*",
+        "zendframework/zend-uri": "2.*",
+        "zendframework/zend-view": "2.*"
     },
 
     "require-dev": {

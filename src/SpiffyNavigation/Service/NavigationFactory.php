@@ -12,23 +12,43 @@ class NavigationFactory implements FactoryInterface
     /**
      * Creates the Navigation service.
      *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator
      * @return Navigation
-     * @throws RuntimeException
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $config = $serviceLocator->get('Configuration');
-
-        if (!isset($config['spiffynavigation'])) {
-            throw new RuntimeException('Missing `spiffynavigation` configuration key');
-        }
-
-        $config     = $config['spiffynavigation'];
+        /** @var \SpiffyNavigation\Options\ModuleOptions $options */
+        $options    = $serviceLocator->get('SpiffyNavigation\Options\ModuleOptions');
         $navigation = new Navigation();
 
-        foreach((array) $config['containers'] as $containerName => $container) {
-            $navigation->addContainer($containerName, ContainerFactory::create($container));
+        foreach($options->getContainers() as $containerName => $container) {
+            if (is_string($container)) {
+                if ($serviceLocator->has($container)) {
+                    $container = $serviceLocator->get($container);
+                } else {
+                    $container = new $container();
+                }
+            } else if (is_array($container)) {
+                $container = ContainerFactory::create($container);
+            }
+
+            $navigation->addContainer($containerName, $container);
+        }
+
+        foreach($options->getListeners() as $priority => $listener) {
+            if (is_string($listener)) {
+                if ($serviceLocator->has($listener)) {
+                    $listener = $serviceLocator->get($listener);
+                } else {
+                    $listener = new $listener();
+                }
+            }
+
+            if (is_numeric($priority)) {
+                $navigation->getEventManager()->attachAggregate($listener, $priority);
+            } else {
+                $navigation->getEventManager()->attachAggregate($listener);
+            }
         }
 
         $application = $serviceLocator->get('Application');
