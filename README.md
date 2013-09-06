@@ -53,6 +53,16 @@ return array(
         'containers' => array(
             'default' => array(
                 array(
+                    'name' => 'github',
+                    'options' => array(
+                        'uri' => 'http://www.github.com',
+                    ),
+                    'attributes' => array(
+                        'class'  => 'foo',
+                        'target' => '_blank'
+                    )
+                ),
+                array(
                     'name' => 'Home',
                     'properties' => array(
                         'label' => 'Home',
