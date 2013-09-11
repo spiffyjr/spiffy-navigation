@@ -42,8 +42,9 @@ Installation of SpiffyNavigation uses composer. For composer documentation, plea
 [Providers](https://github.com/spiffyjr/spiffy-navigation/tree/feature/providers/src/SpiffyNavigation/Provider) let you
 create your navigation containers from various sources. The following providers are included out of the box:
 
-  * [array](https://github.com/spiffyjr/spiffy-navigation/blob/feature/providers/src/SpiffyNavigation/Provider/ArrayProvider.php): builds a container from an array
-  * [json](https://github.com/spiffyjr/spiffy-navigation/blob/feature/providers/src/SpiffyNavigation/Provider/JsonProvider.php):  builds a container from a json string
+  * [array](https://github.com/spiffyjr/spiffy-navigation/blob/feature/providers/src/SpiffyNavigation/Provider/ArrayProvider.php): builds a container from an array.
+  * [config](https://github.com/spiffyjr/spiffy-navigation/blob/feature/providers/src/SpiffyNavigation/Provider/ConfigProvider.php):  builds a container from a file using Zend\Config.
+  * [json](https://github.com/spiffyjr/spiffy-navigation/blob/feature/providers/src/SpiffyNavigation/Provider/JsonProvider.php):  builds a container from a json string.
 
 ## Creating containers
 
