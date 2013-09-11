@@ -3,6 +3,7 @@
 namespace SpiffyNavigation\Service;
 
 use SpiffyNavigation\ContainerFactory;
+use SpiffyNavigation\Provider\ArrayProvider;
 use SpiffyNavigation\Provider\ProviderFactory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -32,7 +33,11 @@ class NavigationFactory implements FactoryInterface
                     $container = new $container();
                 }
             } elseif (is_array($container)) {
-                $container = ContainerFactory::create($container);
+                $provider  = new ArrayProvider();
+                $provider->setOptions(array(
+                    'config' => $container
+                ));
+                $container = $provider->getContainer();
             }
 
             $navigation->addContainer($containerName, $container);
