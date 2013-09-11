@@ -8,8 +8,9 @@ class ProviderFactory
      * @var array
      */
     protected static $classmap = array(
-        'array' => 'SpiffyNavigation\Provider\ArrayProvider',
-        'json'  => 'SpiffyNavigation\Provider\JsonProvider',
+        'array'  => 'SpiffyNavigation\Provider\ArrayProvider',
+        'config' => 'SpiffyNavigation\Provider\ConfigProvider',
+        'json'   => 'SpiffyNavigation\Provider\JsonProvider',
     );
 
     protected function __construct()
