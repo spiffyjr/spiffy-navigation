@@ -8,7 +8,8 @@ class ProviderFactory
      * @var array
      */
     protected static $classmap = array(
-        'array' => 'SpiffyNavigation\Provider\ArrayProvider'
+        'array' => 'SpiffyNavigation\Provider\ArrayProvider',
+        'json'  => 'SpiffyNavigation\Provider\JsonProvider',
     );
 
     protected function __construct()
@@ -29,12 +30,13 @@ class ProviderFactory
             throw new \InvalidArgumentException('Missing type for provider');
         }
 
+        $type     = $spec['type'];
         $provider = null;
-        if (isset(static::$classmap['type'])) {
-            $class    = static::$classmap['type'];
+        if (isset(static::$classmap[$type])) {
+            $class    = static::$classmap[$type];
             $provider = new $class();
-        } elseif (class_exists($spec['type'])) {
-            $provider = new $spec['type']();
+        } elseif (class_exists($type)) {
+            $provider = new $type();
         }
 
         if (!$provider instanceof ProviderInterface) {

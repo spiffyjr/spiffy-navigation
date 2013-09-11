@@ -2,7 +2,7 @@
 
 namespace SpiffyNavigation\Provider;
 
-use SpiffyNavigation\Container;
+use SpiffyNavigation\ContainerFactory;
 
 class ArrayProvider extends AbstractProvider
 {
@@ -11,6 +11,9 @@ class ArrayProvider extends AbstractProvider
      */
     public function getContainer()
     {
-        $container = new Container();
+        if (!isset($this->options['config'])) {
+            throw new \RuntimeException('Cannot build container: missing config in options');
+        }
+        return ContainerFactory::create($this->options['config']);
     }
 }

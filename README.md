@@ -40,9 +40,9 @@ Installation of SpiffyNavigation uses composer. For composer documentation, plea
 ## Creating containers
 
 Creating navigation containers is done via the module configuration using the `spiffy_navigation` key. The containers
-array can take two types of values: a string and an array. If you pass a string the be pulled from the service manager
-if it exists and, if not, will be instantiated directly. If you pass an array the container is built using the
-ContainerFactory::create() method.
+array can take two types of values: a string and an array. If you pass a string the container will be created from a
+provider matching the name if it exists, pulled from the service manager or instantiated directly. If you pass an array
+the container is built using the ContainerFactory::create() method.
 
 ```php
 <?php
@@ -76,7 +76,18 @@ return array(
 
             'serviceManager' => 'My\ServiceManager\Alias',
 
-            'class' => 'My\Class\Instantiation'
+            'class' => 'My\Class\Instantiation',
+
+            'json_provider' => 'mynav',
+        ),
+
+        'providers' => array(
+            'mynav' => array(
+                'type' => 'json',
+                'options' => array(
+                    'json' => file_get_contents(__DIR__ . '/navigation/mynav.json')
+                )
+            )
         )
     )
 );
