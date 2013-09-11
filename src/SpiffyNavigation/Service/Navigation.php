@@ -151,7 +151,7 @@ class Navigation
                         $active = false;
                     }
                 }
-            } else if ($this->getIsActiveRecursion()) {
+            } elseif ($this->getIsActiveRecursion()) {
                 $iterator = new RecursiveIteratorIterator($page, RecursiveIteratorIterator::CHILD_FIRST);
 
                 /** @var \SpiffyNavigation\Page\Page $page */

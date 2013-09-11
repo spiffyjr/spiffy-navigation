@@ -59,7 +59,7 @@ abstract class AbstractHelper extends AbstractHtmlElement
 
         if (is_string($input)) {
             return $this->navigation->getContainer($input);
-        } else if (!$input instanceof Container) {
+        } elseif (!$input instanceof Container) {
             throw new InvalidArgumentException('Container must be a string or instance of SpiffyNavigation\Container');
         }
         return $input;

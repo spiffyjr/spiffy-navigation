@@ -10,20 +10,20 @@ class PageFactoryTest extends PHPUnit_Framework_TestCase
     public function testCreatingPageFromFactory()
     {
         $input = array(
-            'name' => 'Parent',
             'options' => array(
+                'name' => 'Parent',
                 'uri' => 'www.parent1.com',
             ),
             'pages' => array(
                 array(
-                    'name' => 'child1',
                     'options' => array(
+                        'name' => 'child1',
                         'uri' => 'www.child1.com'
                     )
                 ),
                 array(
-                    'name' => 'child2',
                     'options' => array(
+                        'name' => 'child2',
                         'uri' => 'www.child2.com',
                     ),
                 )
@@ -38,23 +38,25 @@ class PageFactoryTest extends PHPUnit_Framework_TestCase
     public function testFactorySetsAttributes()
     {
         $input = array(
-            'name' => 'Parent',
-            'options' => array(
-                'uri' => 'www.parent1.com',
+            'attributes' => array(
                 'foo' => 'bar'
+            ),
+            'options' => array(
+                'name' => 'Parent',
+                'uri' => 'www.parent1.com',
             )
         );
 
         $page = PageFactory::create($input);
-        $this->assertEquals('bar', $page->getProperty('foo'));
+        $this->assertEquals('bar', $page->getAttribute('foo'));
     }
 
     public function testFactorySetsOptions()
     {
         $input = array(
-            'name' => 'Parent',
             'options' => array(
                 'uri' => 'www.parent1.com',
+                'name' => 'Parent',
             ),
             'attributes' => array(
                 'class' => 'foo-bar'
@@ -62,18 +64,14 @@ class PageFactoryTest extends PHPUnit_Framework_TestCase
         );
 
         $page = PageFactory::create($input);
-        $this->assertEquals('foo-bar', $page->getAttribute('class'));
+        $this->assertEquals('www.parent1.com', $page->getOption('uri'));
     }
 
+    /**
+     * @expectedException \PHPUnit_Framework_Error_Deprecated
+     */
     public function testFactoryThrowsExceptionOnMissingName()
     {
-        $this->setExpectedException('InvalidArgumentException');
-        PageFactory::create(array('options' => array('uri' => 'www.test.com')));
-    }
-
-    public function testFactoryThrowsExceptionOnUnknownType()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        PageFactory::create(array());
+        PageFactory::create(array('name' => 'deprecated', 'options' => array('uri' => 'www.test.com')));
     }
 }

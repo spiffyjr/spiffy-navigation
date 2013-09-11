@@ -2,8 +2,8 @@
 
 namespace SpiffyNavigation\Service;
 
-use RuntimeException;
 use SpiffyNavigation\ContainerFactory;
+use SpiffyNavigation\Provider\ProviderFactory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -17,18 +17,21 @@ class NavigationFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        /** @var \SpiffyNavigation\Options\ModuleOptions $options */
-        $options    = $serviceLocator->get('SpiffyNavigation\Options\ModuleOptions');
+        /** @var \SpiffyNavigation\ModuleOptions $options */
+        $options    = $serviceLocator->get('SpiffyNavigation\ModuleOptions');
         $navigation = new Navigation();
+        $providers  = $options->getProviders();
 
         foreach($options->getContainers() as $containerName => $container) {
             if (is_string($container)) {
-                if ($serviceLocator->has($container)) {
+                if (isset($providers[$container])) {
+                    $container = ProviderFactory::create($providers[$container])->getContainer();
+                } elseif ($serviceLocator->has($container)) {
                     $container = $serviceLocator->get($container);
                 } else {
                     $container = new $container();
                 }
-            } else if (is_array($container)) {
+            } elseif (is_array($container)) {
                 $container = ContainerFactory::create($container);
             }
 

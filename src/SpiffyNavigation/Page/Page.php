@@ -8,12 +8,6 @@ use SpiffyNavigation\Container;
 class Page extends Container
 {
     /**
-     * Page name (does not have to be unique).
-     * @var string|null
-     */
-    protected $name;
-
-    /**
      * Attributes used to construct the page element.
      * @var array
      */
@@ -36,14 +30,14 @@ class Page extends Container
      * is provided.
      *
      * @param array|Page $pageOrSpec
-     * @return Page
+     * @return $this
      * @throws InvalidArgumentException
      */
     public function addChild($pageOrSpec)
     {
         if (is_array($pageOrSpec)) {
             $pageOrSpec = PageFactory::create($pageOrSpec);
-        } else if (!$pageOrSpec instanceof Page) {
+        } elseif (!$pageOrSpec instanceof Page) {
             throw new InvalidArgumentException('Valid page types are an array or an Page instance');
         }
 
@@ -81,32 +75,28 @@ class Page extends Container
     }
 
     /**
-     * Set a property.
-     *
-     * @param string $property
+     * @param string $option
      * @param mixed $value
-     * @return Page
+     * @return $this
      */
-    public function setProperty($property, $value)
+    public function setOption($option, $value)
     {
-        $this->options[$property] = $value;
+        $this->options[$option] = $value;
         return $this;
     }
 
     /**
-     * Get a property.
-     *
-     * @param string $property
+     * @param string $option
      * @return mixed
      */
-    public function getProperty($property)
+    public function getOption($option)
     {
-        return isset($this->options[$property]) ? $this->options[$property] : null;
+        return isset($this->options[$option]) ? $this->options[$option] : null;
     }
 
     /**
      * @param array $options
-     * @return Page
+     * @return $this
      */
     public function setOptions(array $options)
     {
@@ -123,33 +113,11 @@ class Page extends Container
     }
 
     /**
-     * @deprecated
-     * @param array $properties
-     * @return $this
-     */
-    public function setProperties(array $properties)
-    {
-        trigger_error('setProperties is deprecated', E_USER_WARNING);
-        $this->options = $properties;
-        return $this;
-    }
-
-    /**
-     * @deprecated
-     * @return array
-     */
-    public function getProperties()
-    {
-        trigger_error('getProperties is deprecated', E_USER_WARNING);
-        return $this->options;
-    }
-
-    /**
      * Set a attribute.
      *
      * @param string $attribute
      * @param mixed $value
-     * @return Page
+     * @return $this
      */
     public function setAttribute($attribute, $value)
     {
@@ -170,7 +138,7 @@ class Page extends Container
 
     /**
      * @param array $attributes
-     * @return Page
+     * @return $this
      */
     public function setAttributes(array $attributes)
     {
@@ -187,19 +155,22 @@ class Page extends Container
     }
 
     /**
+     * @deprecated
      * @param null|string $name
+     * @return $this
      */
     public function setName($name)
     {
-        $this->name = $name;
+        $this->setOption('name', $name);
         return $this;
     }
 
     /**
+     * @deprecated
      * @return null|string
      */
     public function getName()
     {
-        return $this->name;
+        return $this->getOption('name');
     }
 }

@@ -2,41 +2,41 @@
 
 return array(
     array(
-        'name' => 'child1',
         'options' => array(
             'uri' => 'http://www.child1.com',
+            'name' => 'child1',
         ),
         'attributes' => array(
-            'class' => 'child1-class'
+            'class' => 'child1-class',
         ),
     ),
     array(
-        'name' => 'child1',
         'options' => array(
             'uri' => 'http://www.child1.com',
+            'name' => 'child1',
         ),
         'attributes' => array(
-            'class' => 'child1-2-class'
+            'class' => 'child1-2-class',
         ),
     ),
     array(
-        'name' => 'child2',
         'options' => array(
             'uri' => 'http://www.child2.com',
-            'foo' => 'bar'
+            'foo' => 'bar',
+            'name' => 'child2',
         ),
         'attributes' => array(
-            'class' => 'child2-class'
+            'class' => 'child2-class',
         )
     ),
     array(
-        'name' => 'child3',
         'options' => array(
             'uri' => 'http://www.child3.com',
-            'foo' => 'bar'
+            'foo' => 'bar',
+            'name' => 'child3',
         ),
         'attributes' => array(
-            'class' => 'child3-class'
+            'class' => 'child3-class',
         )
     )
 );
