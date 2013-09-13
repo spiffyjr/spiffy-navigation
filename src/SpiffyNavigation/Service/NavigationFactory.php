@@ -26,7 +26,8 @@ class NavigationFactory implements FactoryInterface
         foreach($options->getContainers() as $containerName => $container) {
             if (is_string($container)) {
                 if (isset($providers[$container])) {
-                    $container = ProviderFactory::create($providers[$container])->getContainer();
+                    $factory   = new ProviderFactory($providers[$container]);
+                    $container = $factory->createService($serviceLocator)->getContainer();
                 } elseif ($serviceLocator->has($container)) {
                     $container = $serviceLocator->get($container);
                 } else {

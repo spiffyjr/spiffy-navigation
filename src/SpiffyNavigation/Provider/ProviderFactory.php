@@ -2,52 +2,79 @@
 
 namespace SpiffyNavigation\Provider;
 
-class ProviderFactory
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+
+class ProviderFactory implements FactoryInterface
 {
     /**
      * @var array
      */
-    protected static $classmap = array(
-        'array'  => 'SpiffyNavigation\Provider\ArrayProvider',
-        'config' => 'SpiffyNavigation\Provider\ConfigProvider',
-        'json'   => 'SpiffyNavigation\Provider\JsonProvider',
+    protected $spec = array();
+
+    /**
+     * @var array
+     */
+    protected $classmap = array(
+        'array'          => 'SpiffyNavigation\Provider\ArrayProvider',
+        'config'         => 'SpiffyNavigation\Provider\ConfigProvider',
+        'doctrineobject' => 'SpiffyNavigation\Provider\DoctrineObjectProvider',
+        'json'           => 'SpiffyNavigation\Provider\JsonProvider',
     );
 
-    protected function __construct()
+    /**
+     * @param array $spec
+     */
+    public function __construct(array $spec)
     {
+        $this->spec = $spec;
     }
 
     /**
-     * Creates a provider from a spec.
+     * Create service
      *
-     * @param array $spec
+     * @param ServiceLocatorInterface $serviceLocator
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      * @return ProviderInterface
      */
-    public static function create(array $spec)
+    public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        $spec = $this->spec;
+
         if (!isset($spec['type'])) {
             throw new \InvalidArgumentException('Missing type for provider');
         }
 
         $type     = $spec['type'];
+        $options  = isset($spec['options']) ? $spec['options'] : array();
+        $class    = isset($this->classmap[strtolower($type)]) ? $this->classmap[strtolower($type)]:  null;
         $provider = null;
-        if (isset(static::$classmap[$type])) {
-            $class    = static::$classmap[$type];
+
+        if ($class) {
+            if ($class === 'SpiffyNavigation\Provider\DoctrineObjectProvider') {
+                if (!isset($options['object_manager']) || !$serviceLocator->has($options['object_manager'])) {
+                    throw new \InvalidArgumentException(sprintf(
+                        'Missing or invalid object_manager option: %s',
+                        $options['object_manager']
+                    ));
+                }
+                $options['object_manager'] = $serviceLocator->get($options['object_manager']);
+            }
+
             $provider = new $class();
         } elseif (class_exists($type)) {
             $provider = new $type();
         }
 
         if (!$provider instanceof ProviderInterface) {
-            throw new \RuntimeException('could not determine provider to create');
+            throw new \RuntimeException(sprintf(
+                'Could not determine provider to create for "%s"',
+                $type
+            ));
         }
 
-        if (isset($spec['options'])) {
-            $provider->setOptions($spec['options']);
-        }
-
+        $provider->setOptions($options);
         return $provider;
     }
 }

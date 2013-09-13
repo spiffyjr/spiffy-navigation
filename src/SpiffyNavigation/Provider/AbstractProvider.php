@@ -16,6 +16,6 @@ abstract class AbstractProvider implements ProviderInterface
     public function setOptions(array $options)
     {
         $this->options = $options;
-        return $this->options;
+        return $this;
     }
 }
