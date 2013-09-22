@@ -54,7 +54,7 @@ return array(
             'default' => array(
                 array(
                     'name' => 'Home',
-                    'properties' => array(
+                    'options' => array(
                         'label' => 'Home',
                         'route' => 'home',
                     ),
@@ -72,7 +72,7 @@ return array(
 );
 ```
 
-## Page properties
+## Page options
 
 * label: The label for the element in view helpers.
 * anchor: An optional anchor to append to the uri.
@@ -80,7 +80,7 @@ return array(
 * uri: The direct uri to use (use instead of route).
 * params: Optional params to include during route assembly.
 
-#### Rbac specific properties
+#### Rbac specific options
 
 * role: **required** The role to use to determine if access is granted.
 * permission: **required** The permission to use to determine if access is granted.
