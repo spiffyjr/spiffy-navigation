@@ -202,14 +202,14 @@ class NavigationTest extends AbstractTest
 
     public function testGetHref()
     {
-        $page = $this->nav->getContainer('container1')->findOneByName('child1');
+        $page = $this->nav->getContainer('container1')->findOneByOption('name', 'child1');
         $this->assertEquals('http://www.child1.com', $this->nav->getHref($page));
     }
 
     public function testGetHrefWithFragment()
     {
-        $page = $this->nav->getContainer('container1')->findOneByName('child1');
-        $page->setProperty('fragment', 'test');
+        $page = $this->nav->getContainer('container1')->findOneByOption('name', 'child1');
+        $page->setOption('fragment', 'test');
 
         $this->assertEquals('http://www.child1.com#test', $this->nav->getHref($page));
     }
@@ -250,8 +250,7 @@ class NavigationTest extends AbstractTest
 
     public function testGetHrefFromRouteWithParams()
     {
-        $route = new RegexRoute('/foo/edit/(?<id>\d+)', '/foo/edit/%id%');
-
+        $route  = new RegexRoute('/foo/edit/(?<id>\d+)', '/foo/edit/%id%');
         $router = new TreeRouteStack();
         $router->addRoute('test', $route);
 
@@ -266,8 +265,7 @@ class NavigationTest extends AbstractTest
 
     public function testGetHrefFromRoute()
     {
-        $route = new Literal('/foo-bar');
-
+        $route  = new Literal('/foo-bar');
         $router = new TreeRouteStack();
         $router->addRoute('test', $route);
 
@@ -285,7 +283,7 @@ class NavigationTest extends AbstractTest
         $this->setExpectedException('RuntimeException', 'Unable to construct href');
 
         $navigation = new Navigation();
-        $page = new Page();
+        $page       = new Page();
 
         $navigation->getHref($page);
     }

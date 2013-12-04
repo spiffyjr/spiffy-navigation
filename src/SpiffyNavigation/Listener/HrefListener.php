@@ -33,24 +33,24 @@ class HrefListener extends AbstractListenerAggregate
         $nav  = $e->getNavigation();
 
         /** @var $page \SpiffyNavigation\Page\Page */
-        if ($page->getProperty('uri')) {
-            $href = $page->getProperty('uri');
-        } else if ($page->getProperty('route')) {
+        if ($page->getOption('uri')) {
+            $href = $page->getOption('uri');
+        } elseif ($page->getOption('route')) {
             if (!$nav->getRouter()) {
                 throw new RuntimeException('Cannot construct mvc href with no router');
             }
 
             $href = $nav->getRouter()->assemble((array)
-                $page->getProperty('params'),
-                array('name' => $page->getProperty('route'))
+                $page->getOption('params'),
+                array('name' => $page->getOption('route'))
             );
-        } else if ($page->getProperty('href')) {
+        } elseif ($page->getOption('href')) {
             $href = $page->getAttribute('href');
         }
 
         if ($href) {
-            if ($page->getProperty('fragment')) {
-                $href .= '#' . trim($page->getProperty('fragment'), '#');
+            if ($page->getOption('fragment')) {
+                $href .= '#' . trim($page->getOption('fragment'), '#');
             }
 
             $e->setResult($href);

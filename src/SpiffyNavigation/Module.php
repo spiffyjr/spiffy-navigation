@@ -10,8 +10,7 @@ use Zend\ModuleManager\Feature\ServiceProviderInterface;
 
 class Module implements
     BootstrapListenerInterface,
-    ConfigProviderInterface,
-    ServiceProviderInterface
+    ConfigProviderInterface
 {
     /**
      * {@inheritDoc}
@@ -24,14 +23,6 @@ class Module implements
 
         $config = new HelperConfig();
         $config->configureServiceManager($sm->get('ViewHelperManager'));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getServiceConfig()
-    {
-        return include __DIR__ . '/../../config/service.config.php';
     }
 
     /**

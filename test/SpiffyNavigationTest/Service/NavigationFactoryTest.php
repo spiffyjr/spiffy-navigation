@@ -2,7 +2,7 @@
 
 namespace SpiffyNavigationTest\Service;
 
-use SpiffyNavigation\Options\ModuleOptions;
+use SpiffyNavigation\ModuleOptions;
 use SpiffyNavigation\Service\NavigationFactory;
 use SpiffyNavigationTest\AbstractTest;
 
@@ -10,10 +10,13 @@ class NavigationFactoryTest extends AbstractTest
 {
     public function testCreateContainersFromConfig()
     {
-        $config = include 'SpiffyNavigationTest/_files/config/module.config.php';
-        $config['spiffy_navigation']['containers']['container1'] = include 'SpiffyNavigationTest/_files/config/container1.php';
-        $config['spiffy_navigation']['containers']['container2'] = include 'SpiffyNavigationTest/_files/config/container2.php';
-        $this->serviceManager->setService('SpiffyNavigation\Options\ModuleOptions', new ModuleOptions($config['spiffy_navigation']));
+        $config = include __DIR__ . '/../_files/config/module.config.php';
+        $config['spiffy_navigation']['containers']['container1'] = include __DIR__ . '/../_files/config/container1.php';
+        $config['spiffy_navigation']['containers']['container2'] = include __DIR__ . '/../_files/config/container2.php';
+        $this->serviceManager->setService(
+            'SpiffyNavigation\ModuleOptions',
+            new ModuleOptions($config['spiffy_navigation'])
+        );
         $this->serviceManager->setService('Configuration', $config);
 
         $factory = new NavigationFactory();
@@ -24,8 +27,8 @@ class NavigationFactoryTest extends AbstractTest
 
     public function testNavigationServiceIsReturned()
     {
-        $config = include 'SpiffyNavigationTest/_files/config/module.config.php';
-        $this->serviceManager->setService('SpiffyNavigation\Options\ModuleOptions', new ModuleOptions());
+        $config = include __DIR__ . '/../_files/config/module.config.php';
+        $this->serviceManager->setService('SpiffyNavigation\ModuleOptions', new ModuleOptions());
         $this->serviceManager->setService('Configuration', $config);
 
         $factory = new NavigationFactory();

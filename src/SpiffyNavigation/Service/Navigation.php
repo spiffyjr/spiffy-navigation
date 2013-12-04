@@ -10,11 +10,12 @@ use SpiffyNavigation\Listener;
 use SpiffyNavigation\NavigationEvent;
 use SpiffyNavigation\Page\Page;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Router\RouteStackInterface;
 
-class Navigation
+class Navigation implements EventManagerAwareInterface
 {
     const EVENT_GET_HREF   = 'getHref';
     const EVENT_IS_ALLOWED = 'isAllowed';
@@ -73,10 +74,7 @@ class Navigation
     }
 
     /**
-     * Set the event manager instance used by this context
-     *
-     * @param  EventManagerInterface $events
-     * @return Navigation
+     * {@inheritDoc}
      */
     public function setEventManager(EventManagerInterface $events)
     {
@@ -92,11 +90,7 @@ class Navigation
     }
 
     /**
-     * Retrieve the event manager
-     *
-     * Lazy-loads an EventManager instance if none registered.
-     *
-     * @return EventManagerInterface
+     * {@inheritDoc}
      */
     public function getEventManager()
     {
@@ -151,7 +145,7 @@ class Navigation
                         $active = false;
                     }
                 }
-            } else if ($this->getIsActiveRecursion()) {
+            } elseif ($this->getIsActiveRecursion()) {
                 $iterator = new RecursiveIteratorIterator($page, RecursiveIteratorIterator::CHILD_FIRST);
 
                 /** @var \SpiffyNavigation\Page\Page $page */

@@ -48,7 +48,7 @@ class NavigationMenu extends AbstractHelper
 
             if ($depth > $prevDepth) {
                 $html .= sprintf('<ul%s>', $prevDepth == $options->getMinDepth() ? ' class="' . $options->getUlClass() .'"' : '');
-            } else if ($prevDepth > $depth) {
+            } elseif ($prevDepth > $depth) {
                 for ($i = $prevDepth; $i > $depth; $i--) {
                     $html .= '</li>';
                     $html .= '</ul>';
@@ -126,13 +126,12 @@ class NavigationMenu extends AbstractHelper
      * Convert a page to the html version.
      *
      * @param Page $page
-     * @param bool $escapeLabel
      * @return string
      */
-    protected function htmlify(Page $page, $escapeLabel = true)
+    protected function htmlify(Page $page)
     {
-        if ($page->getProperty('label')) {
-            $label = $page->getProperty('label');
+        if ($page->getOption('label')) {
+            $label = $page->getOption('label');
         } else {
             $label = $page->getName();
         }

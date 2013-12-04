@@ -1,6 +1,6 @@
 <?php
 
-namespace SpiffyNavigation\Options;
+namespace SpiffyNavigation;
 
 use Zend\Stdlib\AbstractOptions;
 
@@ -15,6 +15,11 @@ class ModuleOptions extends AbstractOptions
      * @var array
      */
     protected $listeners = array();
+
+    /**
+     * @var array
+     */
+    protected $providers = array();
 
     /**
      * @param array $containers
@@ -50,5 +55,23 @@ class ModuleOptions extends AbstractOptions
     public function getListeners()
     {
         return $this->listeners;
+    }
+
+    /**
+     * @param array $providers
+     * @return $this
+     */
+    public function setProviders($providers)
+    {
+        $this->providers = $providers;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getProviders()
+    {
+        return $this->providers;
     }
 }

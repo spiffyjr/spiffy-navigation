@@ -1,8 +1,8 @@
 <?php
 
-namespace SpiffyNavigationTest\Options;
+namespace SpiffyNavigationTest;
 
-use SpiffyNavigation\Options\ModuleOptionsFactory;
+use SpiffyNavigation\ModuleOptionsFactory;
 use SpiffyNavigationTest\AbstractTest;
 
 class ModuleOptionsFactoryTest extends AbstractTest
@@ -17,14 +17,14 @@ class ModuleOptionsFactoryTest extends AbstractTest
 
     public function testCreateContainersFromConfig()
     {
-        $config = include 'SpiffyNavigationTest/_files/config/module.config.php';
+        $config = include __DIR__ . '/_files/config/module.config.php';
         $config['spiffy_navigation']['containers'] = array('1', '2', '3');
         $config['spiffy_navigation']['listeners'] = array('abc');
         $this->serviceManager->setService('Configuration', $config);
 
         $factory = new ModuleOptionsFactory();
         $service = $factory->createService($this->serviceManager);
-        $this->assertInstanceOf('SpiffyNavigation\Options\ModuleOptions', $service);
+        $this->assertInstanceOf('SpiffyNavigation\ModuleOptions', $service);
         $this->assertEquals($config['spiffy_navigation']['containers'], $service->getContainers());
         $this->assertEquals($config['spiffy_navigation']['listeners'], $service->getListeners());
     }

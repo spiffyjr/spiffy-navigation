@@ -1,17 +1,17 @@
 <?php
 return array(
     array(
-        'name' => 'child1',
         'options' => array(
             'uri' => 'http://www.child1.com',
+            'name' => 'child1',
         ),
         'attributes' => array(
-            'class' => 'child1-class'
+            'class' => 'child1-class',
         ),
     ),
     array(
-        'name' => 'child2',
         'options' => array(
+            'name' => 'child2',
             'role' => 'foo',
             'permission' => 'child2',
             'label' => 'child2Label',
@@ -23,8 +23,8 @@ return array(
         ),
         'pages' => array(
             array(
-                'name' => 'child2-list',
                 'options' => array(
+                    'name' => 'child2-list',
                     'label' => 'List All',
                     'route' => 'test',
                     'params' => array(
@@ -34,8 +34,8 @@ return array(
                 )
             ),
             array(
-                'name' => 'child2-add',
                 'options' => array(
+                    'name' => 'child2-add',
                     'label' => 'Create',
                     'route' => 'test',
                     'params' => array(
@@ -47,8 +47,8 @@ return array(
         )
     ),
     array(
-        'name' => 'child3',
         'options' => array(
+            'name' => 'child3',
             'label' => 'child3Label',
             'route' => 'foo',
             'params' => array(
@@ -58,8 +58,8 @@ return array(
         ),
         'pages' => array(
             array(
-                'name' => 'child3-list',
                 'options' => array(
+                    'name' => 'child3-list',
                     'label' => 'child3: List All',
                     'route' => 'foo',
                     'params' => array(
@@ -69,8 +69,8 @@ return array(
                 )
             ),
             array(
-                'name' => 'child3-add',
                 'options' => array(
+                    'name' => 'child3-add',
                     'role' => 'foo',
                     'permission' => 'child3-add',
 

@@ -10,9 +10,6 @@ use SpiffyNavigation\Page\PageFactory;
 
 class Container implements RecursiveIterator
 {
-    const FIND_TYPE_NAME      = 0;
-    const FIND_TYPE_PROPERTY  = 1;
-
     /**
      * Index of current active child.
      * @var int
@@ -95,18 +92,39 @@ class Container implements RecursiveIterator
     }
 
     /**
-     * Finds a single child by name.
-     *
-     * @param string $value
-     * @return Page|Null
+     * @deprecated
+     * @param string $name
+     * @return Page|null
      */
-    public function findOneByName($value)
+    public function findOneByName($name)
+    {
+        return $this->findOneByOption('name', $name);
+    }
+
+    /**
+     * @deprecated
+     * @param string $name
+     * @return array
+     */
+    public function findByName($name)
+    {
+        return $this->findByOption('name', $name);
+    }
+
+    /**
+     * Finds a single child by attribute.
+     *
+     * @param string $attribute
+     * @param mixed $value
+     * @return Page|null
+     */
+    public function findOneByAttribute($attribute, $value)
     {
         $iterator = new RecursiveIteratorIterator($this, RecursiveIteratorIterator::SELF_FIRST);
 
         /** @var \SpiffyNavigation\Page\Page $page */
         foreach ($iterator as $page) {
-            if ($page->getName() == $value) {
+            if ($page->getAttribute($attribute) == $value) {
                 return $page;
             }
         }
@@ -117,17 +135,18 @@ class Container implements RecursiveIterator
     /**
      * Finds all children by name.
      *
-     * @param string $value
+     * @param string $attribute
+     * @param mixed $value
      * @return array
      */
-    public function findByName($value)
+    public function findByAttribute($attribute, $value)
     {
         $result   = array();
         $iterator = new RecursiveIteratorIterator($this, RecursiveIteratorIterator::SELF_FIRST);
 
         /** @var \SpiffyNavigation\Page\Page $page */
         foreach ($iterator as $page) {
-            if ($page->getName() == $value) {
+            if ($page->getAttribute($attribute) == $value) {
                 $result[] = $page;
             }
         }
@@ -136,19 +155,19 @@ class Container implements RecursiveIterator
     }
 
     /**
-     * Finds a single child by property.
+     * Finds a single child by option.
      *
-     * @param string $property
+     * @param string $option
      * @param mixed $value
-     * @return Page|Null
+     * @return Page|null
      */
-    public function findOneByProperty($property, $value)
+    public function findOneByOption($option, $value)
     {
         $iterator = new RecursiveIteratorIterator($this, RecursiveIteratorIterator::SELF_FIRST);
 
         /** @var \SpiffyNavigation\Page\Page $page */
         foreach ($iterator as $page) {
-            if ($page->getProperty($property) == $value) {
+            if ($page->getOption($option) == $value) {
                 return $page;
             }
         }
@@ -157,20 +176,20 @@ class Container implements RecursiveIterator
     }
 
     /**
-     * Finds all children by property.
+     * Finds all children by option.
      *
-     * @param string $property
+     * @param string $option
      * @param mixed $value
      * @return array
      */
-    public function findByProperty($property, $value)
+    public function findByOption($option, $value)
     {
         $result   = array();
         $iterator = new RecursiveIteratorIterator($this, RecursiveIteratorIterator::SELF_FIRST);
 
         /** @var \SpiffyNavigation\Page\Page $page */
         foreach ($iterator as $page) {
-            if ($page->getProperty($property) == $value) {
+            if ($page->getOption($option) == $value) {
                 $result[] = $page;
             }
         }
