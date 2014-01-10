@@ -106,7 +106,7 @@ return array(
 
 * label: The label for the element in view helpers.
 * anchor: An optional anchor to append to the uri.
-* route: The route to use for assmebling the uri.
+* route: The route to use for assembling the uri.
 * uri: The direct uri to use (use instead of route).
 * params: Optional params to include during route assembly.
 
