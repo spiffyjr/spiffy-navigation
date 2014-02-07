@@ -49,6 +49,10 @@ class HrefListener extends AbstractListenerAggregate
         }
 
         if ($href) {
+            if ($page->getOption('query_params')) {
+                $href .= '?' . http_build_query($page->getOption('query_params'));
+            }
+
             if ($page->getOption('fragment')) {
                 $href .= '#' . trim($page->getOption('fragment'), '#');
             }
