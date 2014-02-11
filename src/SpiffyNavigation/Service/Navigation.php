@@ -134,14 +134,19 @@ class Navigation implements EventManagerAwareInterface
 
         $active = false;
         if ($this->getRouteMatch()) {
-            $props = $page->getOptions();
-            $name  = $this->getRouteMatch()->getMatchedRouteName();
+            $opts = $page->getOptions();
+            $name = $this->getRouteMatch()->getMatchedRouteName();
 
-            if (isset($props['route']) && $props['route'] == $name) {
+            if (isset($opts['route']) && $opts['route'] == $name) {
                 $active = true;
-                if(isset($props['params'])) {
+                if(isset($opts['params'])) {
                     $tmpRouteParams = $this->getRouteMatch()->getParams();
-                    if(!$this->paramsAreEquals($props['params'], $tmpRouteParams) && !$page->hasChildren()) {
+                    if (!$this->paramsAreEqual($opts['params'], $tmpRouteParams) && !$page->hasChildren()) {
+                        $active = false;
+                    }
+                }
+                if (isset($opts['query_params'])) {
+                    if (!$this->paramsAreEqual($opts['query_params'], $_GET) && !$page->hasChildren()) {
                         $active = false;
                     }
                 }
@@ -344,11 +349,13 @@ class Navigation implements EventManagerAwareInterface
      * @param $routeParams
      * @return bool
      */
-    protected function paramsAreEquals($pageParams, $routeParams)
+    protected function paramsAreEqual($pageParams, $routeParams)
     {
-        $routeParams['controller'] = $routeParams['__CONTROLLER__'];
-        unset($routeParams['__CONTROLLER__']);
-        unset($routeParams['__NAMESPACE__']);
+        foreach (['__CONTROLLER__', '__NAMESPACE__', 'controller', 'action'] as $unsetKey) {
+            if (isset($routeParams[$unsetKey])) {
+                unset($routeParams[$unsetKey]);
+            }
+        }
         if($pageParams == $routeParams) {
             return true;
         }
