@@ -351,7 +351,7 @@ class Navigation implements EventManagerAwareInterface
      */
     protected function paramsAreEqual($pageParams, $routeParams)
     {
-        foreach (['__CONTROLLER__', '__NAMESPACE__', 'controller', 'action'] as $unsetKey) {
+        foreach (array('__CONTROLLER__', '__NAMESPACE__', 'controller', 'action') as $unsetKey) {
             if (isset($routeParams[$unsetKey])) {
                 unset($routeParams[$unsetKey]);
             }
