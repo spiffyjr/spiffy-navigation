@@ -109,6 +109,7 @@ return array(
 * route: The route to use for assembling the uri.
 * uri: The direct uri to use (use instead of route).
 * params: Optional params to include during route assembly.
+* query_params: Optional params to include in the query string during assembly.
 
 #### Rbac specific options
 
