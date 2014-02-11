@@ -134,27 +134,24 @@ class Navigation implements EventManagerAwareInterface
 
         $active = false;
         if ($this->getRouteMatch()) {
-            $opts = $page->getOptions();
             $name = $this->getRouteMatch()->getMatchedRouteName();
 
-            if (isset($opts['route']) && $opts['route'] == $name) {
-                $active = true;
-                if(isset($opts['params'])) {
-                    $tmpRouteParams = $this->getRouteMatch()->getParams();
-                    if (!$this->paramsAreEqual($opts['params'], $tmpRouteParams) && !$page->hasChildren()) {
-                        $active = false;
-                    }
-                }
-                if (isset($opts['query_params'])) {
-                    if (!$this->paramsAreEqual($opts['query_params'], $_GET) && !$page->hasChildren()) {
-                        $active = false;
-                    }
-                }
+            if ($page->getOption('route') == $name) {
+                $reqParams = array_merge($this->getRouteMatch()->getParams(), $_GET);
+                $pageParams = array_merge(
+                    $page->getOption('params') ? $page->getOption('params') : array(),
+                    $page->getOption('query_params') ? $page->getOption('query_params') : array()
+                );
+
+                $active = $this->paramsAreEqual($pageParams, $reqParams);
             } elseif ($this->getIsActiveRecursion()) {
                 $iterator = new RecursiveIteratorIterator($page, RecursiveIteratorIterator::CHILD_FIRST);
 
                 /** @var \SpiffyNavigation\Page\Page $page */
                 foreach ($iterator as $leaf) {
+                    if (!$leaf instanceof Page) {
+                        continue;
+                    }
                     if ($this->isActive($leaf)) {
                         $active = true;
                         break;
@@ -346,19 +343,17 @@ class Navigation implements EventManagerAwareInterface
 
     /**
      * @param $pageParams
-     * @param $routeParams
+     * @param $requiredParams
      * @return bool
      */
-    protected function paramsAreEqual($pageParams, $routeParams)
+    protected function paramsAreEqual($pageParams, $requiredParams)
     {
         foreach (array('__CONTROLLER__', '__NAMESPACE__', 'controller', 'action') as $unsetKey) {
-            if (isset($routeParams[$unsetKey])) {
-                unset($routeParams[$unsetKey]);
+            if (isset($requiredParams[$unsetKey])) {
+                unset($requiredParams[$unsetKey]);
             }
         }
-        if($pageParams == $routeParams) {
-            return true;
-        }
-        return false;
+        $diff = array_diff($requiredParams, $pageParams);
+        return empty($diff);
     }
 }
