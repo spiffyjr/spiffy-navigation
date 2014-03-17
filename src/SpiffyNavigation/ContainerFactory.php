@@ -2,7 +2,7 @@
 
 namespace SpiffyNavigation;
 
-use SpiffyNavigation\Container;
+use SpiffyNavigation\LazyContainer;
 use SpiffyNavigation\Page\PageFactory;
 
 /**
@@ -18,7 +18,7 @@ class ContainerFactory
      * Creates a container from a spec.
      *
      * @param array $spec
-     * @return Container
+     * @return LazyContainer
      */
     public static function create(array $spec)
     {
