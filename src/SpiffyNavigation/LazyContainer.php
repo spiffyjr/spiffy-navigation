@@ -111,6 +111,10 @@ class LazyContainer extends Container
      */
     public function setInitialized($initialized)
     {
+        if (!$initialized) {
+            $this->children = array();
+        }
+        
         $this->initialized = $initialized;
     }
 
