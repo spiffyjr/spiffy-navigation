@@ -18,7 +18,7 @@ class Container implements RecursiveIterator
 
     /**
      * Array of child nodes.
-     * @var array
+     * @var array|Page[]
      */
     protected $children = array();
 
@@ -87,11 +87,44 @@ class Container implements RecursiveIterator
      */
     public function addPage(Page $page)
     {
-        $this->children[] = $page;
+        $this->insertChild($page);
         return $this;
     }
 
-    /**
+	/**
+	 * Inserts a page dependend on it's order
+	 *
+	 * @param Page $page
+	 */
+	protected function insertChild(Page $page)
+	{
+		$order = (int) $page->getOption('order');
+
+		// always first, depends on the zf2 module order
+		if ($order == -1) {
+			array_unshift($this->children, $page);
+			return;
+		}
+
+		// insert
+		$size = count($this->children);
+		foreach ($this->children as $position => $child) {
+			$childOrder = (int) $child->getOption('order');
+			if ($childOrder <= $order) {
+				continue;
+			}
+
+			$children = array_slice($this->children, 0, $position);
+			array_push($children, $page);
+			$this->children = array_merge($children, array_slice($this->children, $position, $size));
+			return;
+		}
+
+		// last option, just add
+		$this->children[] = $page;
+	}
+
+	/**
      * @deprecated
      * @param string $name
      * @return Page|null

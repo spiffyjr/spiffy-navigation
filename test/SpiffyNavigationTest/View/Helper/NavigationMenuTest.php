@@ -25,6 +25,11 @@ class NavigationMenuTest extends AbstractTest
         $this->assertEquals($this->asset('expected/menu1.html'), $this->helper->renderMenu('container1'));
     }
 
+    public function testRenderMenuOrdering()
+    {
+        $this->assertEquals($this->asset('expected/menu4.html'), $this->helper->renderMenu('container4'));
+    }
+
     public function testIsAllowedRbac()
     {
         $rbac = new Rbac();

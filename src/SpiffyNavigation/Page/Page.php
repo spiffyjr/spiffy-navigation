@@ -42,7 +42,7 @@ class Page extends Container
         }
 
         $pageOrSpec->setParent($this);
-        $this->children[] = $pageOrSpec;
+	    $this->insertChild($pageOrSpec);
 
         return $this;
     }

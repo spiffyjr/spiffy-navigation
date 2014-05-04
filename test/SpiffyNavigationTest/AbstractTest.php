@@ -39,6 +39,11 @@ abstract class AbstractTest extends PHPUnit_Framework_TestCase
     protected $container3;
 
     /**
+     * @var \SpiffyNavigation\Container
+     */
+    protected $container4;
+
+    /**
      * @var ServiceManager
      */
     protected $serviceManager;
@@ -57,10 +62,12 @@ abstract class AbstractTest extends PHPUnit_Framework_TestCase
         $this->container1 = ContainerFactory::create(include __DIR__ . '/_files/config/container1.php');
         $this->container2 = ContainerFactory::create(include __DIR__ . '/_files/config/container2.php');
         $this->container3 = ContainerFactory::create(include __DIR__ . '/_files/config/container3.php');
+        $this->container4 = ContainerFactory::create(include __DIR__ . '/_files/config/container4.php');
 
         $this->nav->addContainer('container1', $this->container1);
         $this->nav->addContainer('container2', $this->container2);
         $this->nav->addContainer('container3', $this->container3);
+        $this->nav->addContainer('container4', $this->container4);
 
         // setup view
         $view = new PhpRenderer();
