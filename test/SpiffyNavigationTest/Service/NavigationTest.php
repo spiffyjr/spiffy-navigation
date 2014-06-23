@@ -139,6 +139,24 @@ class NavigationTest extends AbstractTest
         $this->assertTrue($navigation->isActive($page));
     }
 
+    public function testIsActiveWithDefaultParam()
+    {
+        $routeMatch = new RouteMatch(array());
+        $routeMatch->setMatchedRouteName('test');
+        $routeMatch->setParam('page', 1);
+
+        $router = new TreeRouteStack();
+        $router->addRoute('test', new Literal('/foo-bar', array('page' => 1)));
+
+        $page = new Page();
+        $page->setOptions(array('route' => 'test'));
+
+        $navigation = new Navigation();
+        $navigation->setRouteMatch($routeMatch);
+
+        $this->assertTrue($navigation->isActive($page));
+    }
+
     public function testGetContainerWithInvalidNameThrowsException()
     {
         $this->setExpectedException('InvalidArgumentException');
