@@ -142,12 +142,8 @@ class Navigation implements EventManagerAwareInterface
                     $page->getOption('params') ? $page->getOption('params') : array(),
                     $page->getOption('query_params') ? $page->getOption('query_params') : array()
                 );
-	            $ignoreParams = array_merge(
-		            array('__CONTROLLER__', '__NAMESPACE__', 'controller', 'action'),
-		            $page->getOption('ignore_params') ? $page->getOption('ignore_params') : array()
-	            );
 
-                $active = $this->paramsAreEqual($pageParams, $reqParams, $ignoreParams);
+                $active = $this->paramsAreEqual($pageParams, $reqParams);
             } elseif ($this->getIsActiveRecursion()) {
                 $iterator = new RecursiveIteratorIterator($page, RecursiveIteratorIterator::CHILD_FIRST);
 
@@ -345,15 +341,14 @@ class Navigation implements EventManagerAwareInterface
         return $this->isActiveRecursion;
     }
 
-	/**
-	 * @param $pageParams
-	 * @param $requiredParams
-	 * @param $ignoreParams
-	 * @return bool
-	 */
-    protected function paramsAreEqual($pageParams, $requiredParams, $ignoreParams)
+    /**
+     * @param $pageParams
+     * @param $requiredParams
+     * @return bool
+     */
+    protected function paramsAreEqual($pageParams, $requiredParams)
     {
-        foreach ($ignoreParams as $unsetKey) {
+        foreach (array('__CONTROLLER__', '__NAMESPACE__', 'controller', 'action') as $unsetKey) {
             if (isset($requiredParams[$unsetKey])) {
                 unset($requiredParams[$unsetKey]);
             }

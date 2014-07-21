@@ -7,7 +7,6 @@ use SpiffyNavigation\Listener\RbacListener;
 use SpiffyNavigationTest\AbstractTest;
 use SpiffyNavigation\Page\Page;
 use SpiffyNavigation\Service\Navigation;
-use Zend\Mvc\Router\Http\Segment;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Router\Http\Literal;
 use Zend\Mvc\Router\Http\TreeRouteStack;
@@ -99,48 +98,6 @@ class NavigationTest extends AbstractTest
 
         $this->assertTrue($navigation->isActive($page));
         $this->assertTrue($navigation->isActive($child));
-    }
-
-    public function testIsActiveWithIgnoringParamRecursion()
-    {
-        $routeMatch = new RouteMatch(array('id' => 42));
-        $routeMatch->setMatchedRouteName('test');
-
-        $router = new TreeRouteStack();
-        $router->addRoute('test', new Segment('/foo-bar', array('id' => '[0-9]*')));
-
-        $child = new Page();
-        $child->setOptions(array('route' => 'test', 'ignore_params' => array('id')));
-
-        $page = new Page();
-        $page->addChild($child);
-
-        $navigation = new Navigation();
-        $navigation->setRouteMatch($routeMatch);
-
-        $this->assertTrue($navigation->isActive($page));
-        $this->assertTrue($navigation->isActive($child));
-    }
-
-    public function testIsActiveWithoutIgnoringParamRecursion()
-    {
-        $routeMatch = new RouteMatch(array('id' => 42));
-        $routeMatch->setMatchedRouteName('test');
-
-        $router = new TreeRouteStack();
-        $router->addRoute('test', new Segment('/foo-bar', array('id' => '[0-9]*')));
-
-        $child = new Page();
-        $child->setOptions(array('route' => 'test'));
-
-        $page = new Page();
-        $page->addChild($child);
-
-        $navigation = new Navigation();
-        $navigation->setRouteMatch($routeMatch);
-
-        $this->assertFalse($navigation->isActive($page));
-        $this->assertFalse($navigation->isActive($child));
     }
 
     public function testIsActiveWithRecursionDisabled()
