@@ -62,21 +62,23 @@ return array(
         'containers' => array(
             'default' => array(
                 array(
-                    'name' => 'github',
                     'options' => array(
                         'uri' => 'http://www.github.com',
                     ),
                     'attributes' => array(
                         'class'  => 'foo',
-                        'target' => '_blank'
+                        'target' => '_blank',
+                        'name'   => 'github'
                     )
                 ),
                 array(
-                    'name' => 'Home',
                     'options' => array(
                         'label' => 'Home',
                         'route' => 'home',
                     ),
+                    'attributes' => array(
+                        'name' => 'Home'
+                    )
                     'pages' => array(
                         // ...
                     )
