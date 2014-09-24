@@ -135,6 +135,8 @@ class NavigationMenu extends AbstractHelper
         } else {
             $label = $page->getName();
         }
+        
+        $label = $this->view->escapeHtml($this->view->translate($label));
 
         $href = null;
         try {
