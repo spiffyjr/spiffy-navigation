@@ -145,10 +145,11 @@ class NavigationMenu extends AbstractHelper
 
         $attribs = $page->getAttributes();
         if ($href) {
-            $element         = 'a';
-            $attribs['href'] = $href;
+            $element = 'a';
+            $link = ' href="' . $href . '"';
         } else {
             $element = 'span';
+            $link = '';
         }
 
         return sprintf('<%s%s>%s</%s>', $element, $this->htmlAttribs($attribs), $label, $element);
