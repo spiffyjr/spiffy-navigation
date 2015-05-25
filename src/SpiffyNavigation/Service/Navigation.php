@@ -142,12 +142,8 @@ class Navigation implements EventManagerAwareInterface
                     $page->getOption('params') ? $page->getOption('params') : array(),
                     $page->getOption('query_params') ? $page->getOption('query_params') : array()
                 );
-	            $ignoreParams = array_merge(
-		            array('__CONTROLLER__', '__NAMESPACE__', 'controller', 'action'),
-		            $page->getOption('ignore_params') ? $page->getOption('ignore_params') : array()
-	            );
 
-                $active = $this->paramsAreEqual($pageParams, $reqParams, $ignoreParams);
+                $active = count(array_intersect_assoc($reqParams, $pageParams)) == count($pageParams);
             } elseif ($this->getIsActiveRecursion()) {
                 $iterator = new RecursiveIteratorIterator($page, RecursiveIteratorIterator::CHILD_FIRST);
 
@@ -343,22 +339,5 @@ class Navigation implements EventManagerAwareInterface
     public function getIsActiveRecursion()
     {
         return $this->isActiveRecursion;
-    }
-
-	/**
-	 * @param $pageParams
-	 * @param $requiredParams
-	 * @param $ignoreParams
-	 * @return bool
-	 */
-    protected function paramsAreEqual($pageParams, $requiredParams, $ignoreParams)
-    {
-        foreach ($ignoreParams as $unsetKey) {
-            if (isset($requiredParams[$unsetKey])) {
-                unset($requiredParams[$unsetKey]);
-            }
-        }
-        $diff = array_diff($requiredParams, $pageParams);
-        return empty($diff);
     }
 }
