@@ -27,38 +27,6 @@ class LazyContainer extends Container
     /**
      * {@inheritDoc}
      */
-    public function current()
-    {
-        return $this->children[$this->index];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function next()
-    {
-        $this->index++;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function key()
-    {
-        return $this->index;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function valid()
-    {
-        return isset($this->children[$this->index]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function rewind()
     {
         if (!$this->isInitialized()) {
@@ -66,22 +34,6 @@ class LazyContainer extends Container
         }
 
         $this->index = 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function hasChildren()
-    {
-        return count($this->children) > 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getChildren()
-    {
-        return $this->children;
     }
 
     public function __construct(LazyProviderInterface $provider)
