@@ -63,6 +63,8 @@ class ProviderFactory implements FactoryInterface
             }
 
             $provider = new $class();
+        } elseif ($serviceLocator->has($type)) {
+            $provider = $serviceLocator->get($type);
         } elseif (class_exists($type)) {
             $provider = new $type();
         }

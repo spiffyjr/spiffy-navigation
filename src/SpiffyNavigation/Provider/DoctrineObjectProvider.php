@@ -22,10 +22,10 @@ class DoctrineObjectProvider extends ArrayProvider
         }
 
         $objectManager    = $this->getObjectManager();
-        $objectRepostiory = $objectManager->getRepository($targetClass);
+        $objectRepository = $objectManager->getRepository($targetClass);
 
         $result = array();
-        foreach ($objectRepostiory->findAll() as $page) {
+        foreach ($objectRepository->findAll() as $page) {
             if (!$page instanceof ProviderEntityInterface) {
                 throw new \RuntimeException('page must be an instance of ProviderEntityInterface');
             }
