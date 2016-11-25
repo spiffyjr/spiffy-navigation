@@ -28,6 +28,18 @@ class NavigationMenuOptions extends AbstractOptions
     protected $ulClass = 'nav';
 
     /**
+     * Attribute id of the base ul element.
+     * @var string
+     */
+    protected $ulId = '';
+
+    /**
+     * Class of the sub ul element.
+     * @var string
+     */
+    protected $ulSubClass = '';
+
+    /**
      * @param string $ulClass
      * @return NavigationMenu
      */
@@ -43,6 +55,42 @@ class NavigationMenuOptions extends AbstractOptions
     public function getUlClass()
     {
         return $this->ulClass;
+    }
+
+    /**
+     * @param string $ulId
+     * @return NavigationMenu
+     */
+    public function setUlId($ulId)
+    {
+        $this->ulId = $ulId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUlId()
+    {
+        return $this->ulId;
+    }
+
+    /**
+     * @param string $ulSubClass
+     * @return NavigationMenu
+     */
+    public function setUlSubClass($ulSubClass)
+    {
+        $this->ulSubClass = $ulSubClass;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUlSubClass()
+    {
+        return $this->ulSubClass;
     }
 
     /**

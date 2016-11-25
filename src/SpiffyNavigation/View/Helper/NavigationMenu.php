@@ -40,6 +40,7 @@ class NavigationMenu extends AbstractHelper
         $prevDepth = -1;
         foreach($iterator as $page) {
             $depth = $iterator->getDepth();
+            $pageAttributes = $page->getAttributes();
 
             if ($depth == $options->getMinDepth()) {
                 $prevDepth = $depth;
@@ -47,7 +48,12 @@ class NavigationMenu extends AbstractHelper
             }
 
             if ($depth > $prevDepth) {
-                $html .= sprintf('<ul%s>', $prevDepth == $options->getMinDepth() ? ' class="' . $options->getUlClass() .'"' : '');
+                if ($prevDepth == $options->getMinDepth()) {
+                    $ulId = $options->getUlId() ? ' id="' . $options->getUlId() . '"' : '';
+                    $html .= sprintf('<ul%s>', ' class="' . $options->getUlClass() . '"' . $ulId);
+                } else {
+                    $html .= sprintf('<ul%s>', $options->getUlSubClass() ? ' class="' . $options->getUlSubClass() . '"' : '');
+                }
             } elseif ($prevDepth > $depth) {
                 for ($i = $prevDepth; $i > $depth; $i--) {
                     $html .= '</li>';
@@ -58,8 +64,14 @@ class NavigationMenu extends AbstractHelper
                 $html .= '</li>';
             }
 
-            $liClass = $this->navigation->isActive($page) ? ' class="' . $options->getActiveClass() . '"' : '';
-            $html   .= sprintf('<li%s>%s', $liClass, $this->htmlify($page));
+            if ($this->navigation->isActive($page))  {
+                $liExtraClass = isset($pageAttributes['liClass']) ? $pageAttributes['liClass'] : '';
+                $liClass = ' class="' . $options->getActiveClass() . ' ' . $liExtraClass . '"';
+            } else {
+                $liClass = isset($pageAttributes['liClass']) ? ' class="' . $pageAttributes['liClass'] . '"' : '';
+            }
+
+            $html .= sprintf('<li%s>%s', $liClass, $this->htmlify($page));
 
             $prevDepth = $depth;
         }
@@ -150,6 +162,8 @@ class NavigationMenu extends AbstractHelper
         } else {
             $element = 'span';
         }
+
+        unset($attribs['liClass']);
 
         return sprintf('<%s%s>%s</%s>', $element, $this->htmlAttribs($attribs), $label, $element);
     }
